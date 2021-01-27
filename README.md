@@ -15,7 +15,7 @@ It is ongoing project, therefore expect more for the future!
 </div>
 
 
-## Features
+## Features (ongoing)
 - Provide basic sign-up & sign-in authentication through passport
 - Provide CRUD (create, read, update, delete) on post and comment:
     - Only successfully authenticated users are allowed to create, update and delete their posts or comments
