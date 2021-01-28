@@ -28,7 +28,7 @@ const RegisterForm = ({ history }) => {
 
     const onSubmit = e => {
         e.preventDefault();
-        const { username, password, passwordConfirm } = form;
+        const { username, password, passwordConfirm, sentence } = form;
         if ([username, password, passwordConfirm].includes('')) {
             setError('Please fill in all the blanks');
             return;
@@ -37,9 +37,10 @@ const RegisterForm = ({ history }) => {
             setError('Password is incorrect');
             dispatch(changeField({ form:'register', key:'password', value:''}));
             dispatch(changeField({ form:'register', key:'passwordConfirm', value:''}));
+            dispatch(changeField({ form:'register', key:'sentence', value:''}));
             return;
         }
-        dispatch(register({ username, password }));
+        dispatch(register({ username, password, sentence }));
     };
 
     useEffect(() => {

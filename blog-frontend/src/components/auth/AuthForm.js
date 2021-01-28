@@ -78,14 +78,23 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
                     value={form.password}
                 />
                 {type === 'register' && (
-                    <StyledInput
-                    autoComplete="new-password"
-                    name="passwordConfirm"
-                    placeholder="Password Confirm"
-                    type="password"
-                    onChange={onChange}
-                    value={form.passwordConfirm}
-                    />
+                    <>
+                        <StyledInput
+                        autoComplete="new-password"
+                        name="passwordConfirm"
+                        placeholder="Password Confirm"
+                        type="password"
+                        onChange={onChange}
+                        value={form.passwordConfirm}
+                        />
+                        <StyledInput
+                        name="sentence"
+                        placeholder="write a sentence..."
+                        type="sentence"
+                        onChange={onChange}
+                        value={form.sentence}
+                        />
+                    </>
                 )}
                 {error && <ErrorMessage>{error}</ErrorMessage>}
                 <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop>

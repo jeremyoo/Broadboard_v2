@@ -3,16 +3,13 @@ import User from '../../models/user';
 
 /*
   POST api/auth/register
-    {
-      username: 'velopert',
-      password: 'mypass123'
-    }
 */
 export const register = async (ctx) => {
   // Request Body verification
   const schema = Joi.object().keys({
-    username: Joi.string().alphanum().min(3).max(20).required(),
+    username: Joi.string().alphanum().min(3).max(15).required(),
     password: Joi.string().required(),
+    sentence: Joi.string().max(30),
   });
   const result = schema.validate(ctx.request.body);
   if (result.error) {
@@ -20,7 +17,7 @@ export const register = async (ctx) => {
     ctx.body = result.error;
     return;
   }
-  const { username, password } = ctx.request.body;
+  const { username, password, sentence } = ctx.request.body;
   try {
     // check username
     const exists = await User.findByUsername(username);
@@ -31,6 +28,7 @@ export const register = async (ctx) => {
     // create user
     const user = new User({
       username,
+      sentence,
     });
     await user.setPassword(password);
     await user.save();
@@ -47,10 +45,6 @@ export const register = async (ctx) => {
 
 /*
   POST api/auth/login
-    {
-      username: 'velopert',
-      password: 'mypass123'
-    }
 */
 export const login = async (ctx) => {
   const { username, password } = ctx.request.body;
