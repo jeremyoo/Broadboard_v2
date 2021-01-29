@@ -7,7 +7,8 @@ import User from '../../models/user';
 export const register = async (ctx) => {
   // Request Body verification
   const schema = Joi.object().keys({
-    username: Joi.string().alphanum().min(3).max(15).required(),
+    username: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+    nickname: Joi.string().alphanum().min(4).max(15).required(),
     password: Joi.string().required(),
     sentence: Joi.string().max(30),
   });
@@ -17,17 +18,19 @@ export const register = async (ctx) => {
     ctx.body = result.error;
     return;
   }
-  const { username, password, sentence } = ctx.request.body;
+  const { username, nickname, password, sentence } = ctx.request.body;
   try {
-    // check username
-    const exists = await User.findByUsername(username);
-    if (exists) {
+    // check username & nickname
+    const existsUser = await User.findByUsername(username);
+    const existsNick = await User.findOne({ nickname: nickname });
+    if (existsUser || existsNick) {
       ctx.status = 409; // conflict
       return;
     }
     // create user
     const user = new User({
       username,
+      nickname,
       sentence,
     });
     await user.setPassword(password);
