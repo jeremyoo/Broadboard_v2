@@ -8,6 +8,9 @@ const PostSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  updatedDate: {
+    type: Date,
+  },
   user: {
     _id: mongoose.Types.ObjectId,
     username: String,

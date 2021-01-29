@@ -92,7 +92,6 @@ export const write = async (ctx) => {
     ctx.throw(500, e);
   }
 };
-
 // shorten body for preview
 const removeHtmlAndShorten = body => {
   const filtered = sanitizeHtml(body, {
@@ -177,6 +176,7 @@ export const update = async (ctx) => {
     ctx.body = result.error;
     return;
   }
+  ctx.request.body.updatedDate = Date.now();
   const nextData = {...ctx.request.body};
   if (nextData.body) {
     nextData.body = sanitizeHtml(nextData.body, sanitizeOption);
