@@ -68,9 +68,9 @@ export const checkOwnPost = (ctx, next) => {
 */
 export const write = async (ctx) => {
   const schema = Joi.object().keys({
-    title: Joi.string().required(),
+    title: Joi.string().max(200).required(),
     body: Joi.string().required(),
-    tags: Joi.array().items(Joi.string()).required(),
+    tags: Joi.array().items(Joi.string().max(20)).required(),
   });
   const result = schema.validate(ctx.request.body);
   if (result.error) {
@@ -79,6 +79,7 @@ export const write = async (ctx) => {
     return;
   }
   const { title, body, tags } = ctx.request.body;
+  console.log(ctx.state.user);
   const post = new Post({
     title,
     body: sanitizeHtml(body, sanitizeOption),
