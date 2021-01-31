@@ -15,6 +15,8 @@ const PostSchema = new Schema({
     _id: mongoose.Types.ObjectId,
     username: String,
   },
+  likes_count: Number,
+  like_users: [String],
 });
 
 const Post = mongoose.model('Post', PostSchema);

@@ -79,12 +79,13 @@ export const write = async (ctx) => {
     return;
   }
   const { title, body, tags } = ctx.request.body;
-  console.log(ctx.state.user);
   const post = new Post({
     title,
     body: sanitizeHtml(body, sanitizeOption),
     tags,
     user: ctx.state.user,
+    likes_count: 0,
+    like_users: [],
   });
   try {
     await post.save();
@@ -193,5 +194,29 @@ export const update = async (ctx) => {
     ctx.body = post;
   } catch (e) {
     ctx.throw(500, e);
+  }
+};
+
+/*
+  PATCH /api/posts/:id/like
+*/
+export const like = async (ctx) => {
+  const { id } = ctx.params;
+  const { user } = ctx.request.body;
+  try {
+    const post = await Post.findById(id).exec();
+    if (post.like_users.indexOf(user) !== -1) {
+      post.likes_count--;
+      post.like_users = post.like_users.filter((item) => item !== user);
+      post.save();
+      ctx.body = post;
+      return;
+    };
+    post.likes_count++;
+    post.like_users = [...post.like_users, user]
+    post.save();
+    ctx.body = post;
+  } catch (e) {
+    ctx.thorw(500, e);
   }
 };

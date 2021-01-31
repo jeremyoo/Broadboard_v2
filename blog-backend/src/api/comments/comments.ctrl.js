@@ -73,7 +73,6 @@ export const list = async (ctx) => {
         const comments = await Comment.find({ post: { _id: ObjectId(post_id)} })
             .sort({ _id: -1 })
             .exec();
-        console.log(comments);
         ctx.body = comments;
     } catch (e) {
         ctx.throw(500, e);

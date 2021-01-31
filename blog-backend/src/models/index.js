@@ -29,5 +29,6 @@ export default () => {
     })
     require('./user')
     require('./post')
+    require('./comment')
 }
 
