@@ -7,6 +7,10 @@ const UserSchema = new Schema({
   nickname: String,
   hashedPassword: String,
   sentence: String,
+  follower_count: Number,
+  following_count: Number,
+  followers: [String],
+  followings: [String],
 });
 
 UserSchema.methods.setPassword = async function (password) {

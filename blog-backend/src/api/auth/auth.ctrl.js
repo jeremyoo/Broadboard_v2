@@ -23,6 +23,7 @@ export const register = async (ctx) => {
     // check username & nickname
     const existsUser = await User.findByUsername(username);
     const existsNick = await User.findOne({ nickname: nickname });
+    console.log(existsNick, existsUser);
     if (existsUser || existsNick) {
       ctx.status = 409; // conflict
       return;
@@ -32,6 +33,10 @@ export const register = async (ctx) => {
       username,
       nickname,
       sentence,
+      follower_count: 0,
+      following_count: 0,
+      followers: [],
+      followings: [],
     });
     await user.setPassword(password);
     await user.save();
