@@ -4,6 +4,7 @@ import 'quill/dist/quill.snow.css';
 import styled from 'styled-components';
 import palette from '../../lib/styles/palette';
 import Responsive from '../common/Responsive';
+import * as fileCtrl from '../../lib/api/file';
 
 const EditorBlock = styled(Responsive)`
   padding-top: 5rem;
@@ -37,17 +38,39 @@ const Editor = ({ onChangeField, title, body }) => {
   const quillInstance = useRef(null);
 
   useEffect(() => {
+    const imageHandler = () => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+        input.onchange = async () => {
+          const file = input.files[0];
+          const formData = new FormData();
+          formData.append('image', file);
+          const path = await fileCtrl.upload(formData);
+          const url = path.data.data.display_url
+          const range = quill.getSelection(true);
+          await quill.insertEmbed(range.index, 'image', url);
+          quill.setSelection(range.index + 1);
+          onChangeField({ key: 'body', value: quill.root.innerHTML });
+        }
+    } 
     quillInstance.current = new Quill(quillElement.current, {
       theme: 'snow',
       placeholder: 'write your post...',
       modules: {
         // https://quilljs.com/docs/modules/toolbar/
-        toolbar: [
-          [{ header: '1' }, { header: '2' }],
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['blockquote', 'code-block', 'link', 'image'],
-        ],
+        toolbar: {
+          container: [
+            [{ header: '1' }, { header: '2' }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['blockquote', 'code-block', 'link', 'image'],
+          ],
+          handlers: {
+            image: imageHandler
+          }
+        }
       },
     });
     // https://quilljs.com/docs/api/events

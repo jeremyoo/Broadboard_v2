@@ -22,7 +22,7 @@ export const register = async (ctx) => {
   try {
     // check username & nickname
     const existsUser = await User.findByUsername(username);
-    const existsNick = await User.findOne({ nickname: nickname });
+    const existsNick = await User.findByNickname(nickname);
     console.log(existsNick, existsUser);
     if (existsUser || existsNick) {
       ctx.status = 409; // conflict

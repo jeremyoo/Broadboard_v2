@@ -26,7 +26,7 @@ const sanitizeOption = {
     img: ['src'],
     li: ['class'],
   },
-  allowedSchemes: ['data', 'http'],
+  allowedSchemes: ['data', 'http', 'https'],
 };
 
 // get postbyID function
@@ -72,6 +72,7 @@ export const write = async (ctx) => {
     body: Joi.string().required(),
     tags: Joi.array().items(Joi.string().max(20)).required(),
   });
+  console.log(ctx.request.body);
   const result = schema.validate(ctx.request.body);
   if (result.error) {
     ctx.status = 400; // Bad Request

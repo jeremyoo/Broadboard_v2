@@ -7,10 +7,6 @@ const UserSchema = new Schema({
   nickname: String,
   hashedPassword: String,
   sentence: String,
-  follower_count: Number,
-  following_count: Number,
-  followers: [String],
-  followings: [String],
 });
 
 UserSchema.methods.setPassword = async function (password) {
@@ -50,6 +46,11 @@ UserSchema.methods.generateToken = function () {
 UserSchema.statics.findByUsername = function (username) {
   return this.findOne({ username });
 };
+
+UserSchema.statics.findByNickname = function (nickname) {
+  return this.findOne({ nickname });
+};
+
 
 const User = mongoose.model('User', UserSchema);
 export default User;
