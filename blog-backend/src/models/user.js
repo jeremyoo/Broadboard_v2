@@ -31,6 +31,7 @@ UserSchema.methods.generateToken = function () {
     {
       _id: this.id,
       username: this.username,
+      nickname: this.nickname,
     },
     // second param: JWT password
     // eslint-disable-next-line no-undef

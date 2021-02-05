@@ -14,6 +14,7 @@ const PostSchema = new Schema({
   user: {
     _id: mongoose.Types.ObjectId,
     username: String,
+    nickname: String,
   },
   likes_count: Number,
   like_users: [String],

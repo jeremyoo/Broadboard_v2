@@ -23,7 +23,6 @@ export const register = async (ctx) => {
     // check username & nickname
     const existsUser = await User.findByUsername(username);
     const existsNick = await User.findByNickname(nickname);
-    console.log(existsNick, existsUser);
     if (existsUser || existsNick) {
       ctx.status = 409; // conflict
       return;
@@ -94,7 +93,7 @@ export const check = async (ctx) => {
     ctx.status = 401; // Unauthorized
     return;
   }
-  ctx.body = user;
+  ctx.body = user
 };
 
 /*
