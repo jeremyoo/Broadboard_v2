@@ -1,8 +1,8 @@
 import React from 'react';
-import TagBoxContainer from '../containers/write/TagBoxContainer';
-import WriteActionButtonsContainer from '../containers/write/WriteActionButtonsContainer';
+import TagBoxContainer from '../containers/writePost/TagBoxContainer';
+import WritePostButtonsContainer from '../containers/writePost/WritePostButtonsContainer';
 import Responsive from '../components/common/Responsive';
-import EditorContainer from '../containers/write/EditorContainer';
+import PostEditorContainer from '../containers/writePost/PostEditorContainer';
 import { Helmet } from 'react-helmet-async';
 
 const WritePage = () => {
@@ -11,9 +11,9 @@ const WritePage = () => {
       <Helmet>
         <title>Write post</title>
       </Helmet>
-      <EditorContainer />
+      <PostEditorContainer />
       <TagBoxContainer />
-      <WriteActionButtonsContainer />
+      <WritePostButtonsContainer />
     </Responsive>
   );
 };

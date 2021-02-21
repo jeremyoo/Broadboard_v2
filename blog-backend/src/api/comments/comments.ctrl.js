@@ -1,5 +1,6 @@
 import Joi from '@hapi/joi';
 import Comment from '../../models/comment';
+import Post from '../../models/post';
 import mongoose from 'mongoose';
 
 const { ObjectId } = mongoose.Types;
@@ -8,7 +9,7 @@ const { ObjectId } = mongoose.Types;
 export const getCommentById = async (ctx, next) => {
     const { id } = ctx.params;
     if (!ObjectId.isValid(id)) {
-        ctx.status = 400; // Bad request;
+        ctx.status = 400; // bad request;
         return;
     }
     try {
@@ -34,7 +35,7 @@ export const checkOwnComment = async (ctx, next) => {
 }
 
 /*
-  POST /api/comments
+  POST /api/:id/comments
   {
     body: 'comment',
     user: {_id:'', username:''},
@@ -50,11 +51,17 @@ export const write = async (ctx) => {
         ctx.status = 400 // bad request;
         ctx.body = result.error;
     }
-    const { body, post_id } = ctx.request.body;
+    const { body } = ctx.request.body;
+    const { id } = ctx.params;
+    if (!ObjectId.isValid(id)) {
+        ctx.status = 400; // bad request;
+        return;
+    }
+    const post = await Post.findById(id);
     const comment = new Comment({
         body: body,
         user: ctx.state.user,
-        post: post_id,  
+        post: post,
     });
     try {
         await comment.save();
@@ -65,13 +72,18 @@ export const write = async (ctx) => {
 };
 
 /*
-  GET /api/comments
+  GET /api/:id/comments
 */
 export const list = async (ctx) => {
-    const { post_id } = ctx.request.body;
+    const { id } = ctx.params
+    if (!ObjectId.isValid(id)) {
+        ctx.status = 400; // bad request;
+        return;
+    }
     try {
-        const comments = await Comment.find({ post: { _id: ObjectId(post_id)} })
-            .sort({ _id: -1 })
+        const comments = await Comment.find({ post: { _id: ObjectId(id)} })
+            .sort({ publishedDate: -1 })
+            .lean() // JSON
             .exec();
         ctx.body = comments;
     } catch (e) {
@@ -80,7 +92,7 @@ export const list = async (ctx) => {
 };
 
 /*
-  GET /api/comments/:id
+  GET /api/:id/comments/:id
 */
 export const read = async (ctx) => {
     ctx.body = ctx.state.comment;
@@ -100,7 +112,7 @@ export const remove = async (ctx) => {
 };
 
 /*
-  PATCH /api/comments/:id
+  PATCH /api/:id/comments/:id
 */
 export const update = async (ctx) => {
     const { id } = ctx.params;

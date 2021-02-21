@@ -7,6 +7,6 @@ const api = new Router();
 
 api.use('/posts', posts.routes()); 
 api.use('/auth', auth.routes());
-api.use('/comments', comments.routes());
+api.use('/:id/comments', comments.routes());
 
 export default api;

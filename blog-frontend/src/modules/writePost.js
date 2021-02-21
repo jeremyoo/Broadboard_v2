@@ -5,8 +5,8 @@ import createRequestSaga, {
 import * as postsAPI from '../lib/api/posts';
 import { takeLatest } from 'redux-saga/effects';
 
-const INITIALIZE = 'write/INITIALIZE';
-const CHANGE_FIELD = 'write/CHANGE_FIELD';
+const INITIALIZE_POST = 'write/INITIALIZE_POST';
+const CHANGE_FIELD_POST = 'write/CHANGE_FIELD_POST';
 const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST';
 
 const [
@@ -21,18 +21,18 @@ const [
   UPDATE_POST_FAILURE,
 ] = createRequestActionTypes('write/UPDATE_POST');
 
-export const initialize = createAction(INITIALIZE);
-export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
+export const initializePost = createAction(INITIALIZE_POST);
+export const changePostField = createAction(CHANGE_FIELD_POST, ({ key, value }) => ({
   key,
   value,
 }));
-export const writePost = createAction(WRITE_POST, ({ title, body, tags }) => ({
+export const setOriginalPost = createAction(SET_ORIGINAL_POST, (post) => post);
+export const write_Post = createAction(WRITE_POST, ({ title, body, tags }) => ({
   title,
   body,
   tags,
 }));
-export const setOriginalPost = createAction(SET_ORIGINAL_POST, (post) => post);
-export const updatePost = createAction(
+export const update_Post = createAction(
   UPDATE_POST,
   ({ id, title, body, tags }) => ({
     id,
@@ -42,12 +42,12 @@ export const updatePost = createAction(
   }),
 );
 
-const writePostSaga = createRequestSaga(WRITE_POST, postsAPI.writePost);
-const updatePostSaga = createRequestSaga(UPDATE_POST, postsAPI.updatePost);
+const writePost_Saga = createRequestSaga(WRITE_POST, postsAPI.writePost);
+const updatePost_Saga = createRequestSaga(UPDATE_POST, postsAPI.updatePost);
 
-export function* writeSaga() {
-  yield takeLatest(WRITE_POST, writePostSaga);
-  yield takeLatest(UPDATE_POST, updatePostSaga);
+export function* writePostSaga() {
+  yield takeLatest(WRITE_POST, writePost_Saga);
+  yield takeLatest(UPDATE_POST, updatePost_Saga);
 }
 
 const initialState = {
@@ -59,10 +59,10 @@ const initialState = {
   originalPostId: null,
 };
 
-const write = handleActions(
+const writePost = handleActions(
   {
-    [INITIALIZE]: (state) => initialState,
-    [CHANGE_FIELD]: (state, { payload: { key, value } }) => ({
+    [INITIALIZE_POST]: (state) => initialState,
+    [CHANGE_FIELD_POST]: (state, { payload: { key, value } }) => ({
       ...state,
       [key]: value,
     }),
@@ -93,4 +93,4 @@ const write = handleActions(
   initialState,
 );
 
-export default write;
+export default writePost;

@@ -11,7 +11,7 @@ const CommentSchema = new Schema({
     },
     user: {
         _id: mongoose.Types.ObjectId,
-        username: String,
+        nickname: String,
     },
     post: {
         _id: mongoose.Types.ObjectId,

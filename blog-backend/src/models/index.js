@@ -9,6 +9,7 @@ export default () => {
         if ( NODE_ENV !== 'production' ) {
             mongoose.set('debug', true);
         }
+        mongoose.set('debug', false);
         mongoose.connect(MONGO_URL, {
             dbName: 'bboard_v2',
         }, (error) => {

@@ -36,7 +36,7 @@ const PostItemBlock = styled.div`
         }
     }
     p {
-        margin-top: 2rem;
+        margin-top: 1rem;
         word-wrap: break-word;
     }
 `;
@@ -55,15 +55,14 @@ const PostItem = ({ post }) => {
     );
 };
 
-const PostList = ({ posts, loading, error, showWriteButton }) => {
+const PostList = ({ posts, loading, error, user }) => {
     if (error) {
         return <PostListBlock>Error occured.</PostListBlock>;
     }
-
     return (
         <PostListBlock>
             <WritePostButtonWrapper>
-                {showWriteButton && (
+                {user && (
                 <Button cyan to="/write">
                     New Post
                 </Button>

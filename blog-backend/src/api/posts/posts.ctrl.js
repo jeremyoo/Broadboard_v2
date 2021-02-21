@@ -9,6 +9,7 @@ const sanitizeOption = {
   allowedTags: [
     'h1',
     'h2',
+    'br',
     'b',
     'i',
     'u',
@@ -17,6 +18,8 @@ const sanitizeOption = {
     'ul',
     'ol',
     'li',
+    'strong',
+    'em',
     'blockquote',
     'a',
     'img',
@@ -72,7 +75,6 @@ export const write = async (ctx) => {
     body: Joi.string().required(),
     tags: Joi.array().items(Joi.string().max(20)).required(),
   });
-  console.log(ctx.request.body);
   const result = schema.validate(ctx.request.body);
   if (result.error) {
     ctx.status = 400; // Bad Request

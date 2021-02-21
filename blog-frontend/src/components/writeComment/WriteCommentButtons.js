@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import Responsive from '../common/Responsive';
 import Button from '../common/Button';
 
-const WriteActionButtonsBlock = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 3rem;
+const WriteCommentButtonsBlock = styled(Responsive)`
+  padding: 1.5rem 1rem;
   button + button {
     margin-left: 0.5rem;
   }
@@ -17,15 +17,15 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const WriteActionButtons = ({ onCancel, onPublish, isEdit }) => {
+const WriteCommentButtons = ({ onCancel, onPublish, isEdit }) => {
   return (
-    <WriteActionButtonsBlock>
+    <WriteCommentButtonsBlock>
       <StyledButton cyan onClick={onPublish}>
-        {isEdit ? 'Edit' : 'Add'} Post
+        {isEdit ? 'Edit' : 'Add'} Comment
       </StyledButton>
       <StyledButton onClick={onCancel}>Cancel</StyledButton>
-    </WriteActionButtonsBlock>
+    </WriteCommentButtonsBlock>
   );
 };
 
-export default WriteActionButtons;
+export default WriteCommentButtons;

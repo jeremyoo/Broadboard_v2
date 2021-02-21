@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { readPost, unloadPost } from '../../modules/post';
 import PostViewer from '../../components/post/PostViewer';
 import PostActionButtons from '../../components/post/PostActionButtons';
-import { setOriginalPost } from '../../modules/write';
+import { setOriginalPost } from '../../modules/writePost';
 import { removePost } from '../../lib/api/posts';
 
 const PostViewerContainer = ({ match, history }) => {

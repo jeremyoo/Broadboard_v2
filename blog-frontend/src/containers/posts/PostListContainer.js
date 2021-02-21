@@ -17,11 +17,11 @@ const PostListContainer = ({ location, match }) => {
     );
 
     useEffect(() => {
-        const { username } = match.params;
+        const { nickname } = match.params;
         const { tag, page } = qs.parse(location.search, {
             ignoreQueryPrefix: true,
         });
-        dispatch(listPosts({ tag, username, page }));
+        dispatch(listPosts({ tag, nickname, page }));
     }, [dispatch, location.search, match.params]);
 
     return (
@@ -29,7 +29,7 @@ const PostListContainer = ({ location, match }) => {
             loading={loading}
             error={error}
             posts={posts}
-            showWriteButton={user}
+            user={user}
         />
     );
 };

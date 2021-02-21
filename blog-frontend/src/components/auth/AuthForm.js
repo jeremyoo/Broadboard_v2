@@ -69,6 +69,16 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
                     onChange={onChange}
                     value={form.username}
                 />
+                {type === 'register' && (
+                    <>
+                        <StyledInput
+                        name="nickname"
+                        placeholder="nickname"
+                        onChange={onChange}
+                        value={form.nickname}
+                        />
+                    </>
+                )}
                 <StyledInput
                     autoComplete="new-password"
                     name="password"
@@ -90,7 +100,6 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
                         <StyledInput
                         name="sentence"
                         placeholder="write a sentence..."
-                        type="sentence"
                         onChange={onChange}
                         value={form.sentence}
                         />

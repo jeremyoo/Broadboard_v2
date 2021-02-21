@@ -6,7 +6,7 @@ import palette from '../../lib/styles/palette';
 import Responsive from '../common/Responsive';
 import * as fileCtrl from '../../lib/api/file';
 
-const EditorBlock = styled(Responsive)`
+const PostEditorBlock = styled(Responsive)`
   padding-top: 5rem;
   padding-bottom: 5rem;
 `;
@@ -21,7 +21,7 @@ const TitleInput = styled.input`
   width: 100%;
 `;
 
-const QuillWrapper = styled.div`
+const PostQuillWrapper = styled.div`
   .ql-editor {
     padding: 0.5rem 1rem;
     min-height: 320px;
@@ -33,9 +33,9 @@ const QuillWrapper = styled.div`
   }
 `;
 
-const Editor = ({ onChangeField, title, body }) => {
-  const quillElement = useRef(null);
-  const quillInstance = useRef(null);
+const PostEditor = ({ onChangePost, title, body }) => {
+  const PostquillElement = useRef(null);
+  const PostquillInstance = useRef(null);
 
   useEffect(() => {
     const imageHandler = () => {
@@ -52,10 +52,10 @@ const Editor = ({ onChangeField, title, body }) => {
           const range = quill.getSelection(true);
           await quill.insertEmbed(range.index, 'image', url);
           quill.setSelection(range.index + 1);
-          onChangeField({ key: 'body', value: quill.root.innerHTML });
+          onChangePost({ key: 'body', value: quill.root.innerHTML });
         }
     } 
-    quillInstance.current = new Quill(quillElement.current, {
+    PostquillInstance.current = new Quill(PostquillElement.current, {
       theme: 'snow',
       placeholder: 'write your post...',
       modules: {
@@ -74,37 +74,37 @@ const Editor = ({ onChangeField, title, body }) => {
       },
     });
     // https://quilljs.com/docs/api/events
-    const quill = quillInstance.current;
+    const quill = PostquillInstance.current;
     quill.on('text-change', (delta, oldDelta, source) => {
       if (source === 'user') {
-        onChangeField({ key: 'body', value: quill.root.innerHTML });
+        onChangePost({ key: 'body', value: quill.root.innerHTML });
       }
     });
-  }, [onChangeField]);
+  }, [onChangePost]);
 
   const mounted = useRef(false);
   useEffect(() => {
     if (mounted.current) return;
     mounted.current = true;
-    quillInstance.current.root.innerHTML = body;
+    PostquillInstance.current.root.innerHTML = body;
   }, [body]);
 
   const onChangeTitle = (e) => {
-    onChangeField({ key: 'title', value: e.target.value });
+    onChangePost({ key: 'title', value: e.target.value });
   };
 
   return (
-    <EditorBlock>
+    <PostEditorBlock>
       <TitleInput
         placeholder="Title"
         onChange={onChangeTitle}
         value={title}
       />
-      <QuillWrapper>
-        <div ref={quillElement} />
-      </QuillWrapper>
-    </EditorBlock>
+      <PostQuillWrapper>
+        <div ref={PostquillElement} />
+      </PostQuillWrapper>
+    </PostEditorBlock>
   );
 };
 
-export default Editor;
+export default PostEditor;
