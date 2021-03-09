@@ -8,12 +8,13 @@ export const register = async (ctx) => {
   // Request Body verification
   const schema = Joi.object().keys({
     username: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-    nickname: Joi.string().alphanum().min(4).max(15).required(),
+    nickname: Joi.string().alphanum().min(4).max(30).required(),
     password: Joi.string().required(),
-    sentence: Joi.string().max(30),
+    sentence: Joi.string().max(100),
   });
   const result = schema.validate(ctx.request.body);
   if (result.error) {
+    console.log(result.error);
     ctx.status = 400;
     ctx.body = result.error;
     return;
@@ -80,6 +81,7 @@ export const login = async (ctx) => {
       httpOnly: true,
     });
   } catch (e) {
+    console.log(e);
     ctx.throw(500, e);
   }
 };

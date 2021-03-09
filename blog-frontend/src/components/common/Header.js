@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 const HeaderBlock = styled.div`
     position: fixed;
+    top: 0;
     width: 100%;
     background: white;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
@@ -40,26 +41,23 @@ const UserInfo = styled.div`
 const Header = ({ user, onLogout }) => {
 
     return (
-        <>
-            <HeaderBlock>
-                <Wrapper>
-                    <Link to='/' className="logo">
-                        BroadBoard
-                    </Link>
-                    {user ? (
-                        <div className='right'>
-                            <UserInfo>{user.nickname}</UserInfo>
-                            <Button onClick={onLogout} >Log out</Button>
-                        </div>
-                    ) : (
-                        <div className="right">
-                            <Button to='/login'>Log in</Button>
-                        </div>
-                    )}
-                </Wrapper>
-            </HeaderBlock>
-            <Spacer />
-        </>
+        <HeaderBlock>
+            <Wrapper>
+                <Link to='/' className="logo">
+                    BroadBoard
+                </Link>
+                {user ? (
+                    <div className='right'>
+                        <UserInfo>{user.nickname}</UserInfo>
+                        <Button onClick={onLogout} >Log out</Button>
+                    </div>
+                ) : (
+                    <div className="right">
+                        <Button to='/login'>Log in</Button>
+                    </div>
+                )}
+            </Wrapper>
+        </HeaderBlock>
     );
 };
 

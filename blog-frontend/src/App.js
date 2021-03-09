@@ -6,18 +6,23 @@ import RegisterPage from './pages/RegisterPage';
 import WritePage from './pages/WritePage';
 import PostPage from './pages/PostPage';
 import { Helmet } from 'react-helmet-async'
+import { GlobalStyle } from './lib/styles';
+// import fakeData from './lib/fakeData';
 
 const App = () => {
+  // fakeData();
+
   return (
     <>
       <Helmet>
         <title>REACTERS</title>
       </Helmet>
-      <Route component={PostListPage} path={['/@:nickname', '/']} exact />
-      <Route component={LoginPage} path="/login" />
-      <Route component={RegisterPage} path="/register" />
-      <Route component={WritePage} path="/write" />
-      <Route component={PostPage} path="/@:nickname/:postId" />
+        <GlobalStyle />
+          <Route component={PostListPage} path={['/@:nickname', '/']} exact />
+          <Route component={LoginPage} path="/login" />
+          <Route component={RegisterPage} path="/register" />
+          <Route component={WritePage} path="/write" />
+          <Route component={PostPage} path="/@:nickname/:postId" />
     </>
   )
 }

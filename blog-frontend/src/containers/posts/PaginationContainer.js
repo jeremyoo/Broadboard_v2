@@ -1,27 +1,42 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import Pagination from '../../components/posts/Pagination';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { changePage } from '../../modules/posts';
 import qs from 'qs';
 
-const PaginationContainer = ({ location, match }) => {
-    const { username } = match.params;
-    const { lastPage, posts, loading } = useSelector(({ posts, loading }) => ({
-        lastPage: posts.lastPage,
+const PaginationContainer = () => {
+    const dispatch = useDispatch();
+    const { lastPage, page, posts, loading } = useSelector(({ posts, loading }) => ({
         posts: posts.posts,
+        page: posts.page,
+        lastPage: posts.lastPage,
         loading: loading['posts/LIST_POSTS'],
     }));
 
-    if (!posts || loading) return null;
+    const infiniteScroll = useCallback(() => {
+        let scrollHeight = document.documentElement.scrollHeight * 0.9;
+        let scrollTop = document.documentElement.scrollTop;
+        let clientHeight = document.documentElement.clientHeight;
+        if (scrollTop + clientHeight >= scrollHeight) {
+            if (loading === false && lastPage >= page) {
+                return dispatch(changePage());
+            }
+            return;
+        }
+    })
 
-    const { tag, page = 1 } = qs.parse(location.search, {
-        ignoreQueryPrefix: true,
-    });
+    useEffect(() => {
+        window.addEventListener("scroll", infiniteScroll, true);
+        return () => {
+            window.removeEventListener("scroll", infiniteScroll, true);
+        }
+    }, [loading])
+
+    if (!posts || loading) return null;
 
     return (
         <Pagination
-            tag={tag}
-            username={username}
             page={parseInt(page, 10)}
             lastPage={lastPage}
         />

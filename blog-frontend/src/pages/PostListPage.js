@@ -1,15 +1,15 @@
-import React from 'react';
-import HeaderContainer from '../containers/common/HeaderContainer';
+import React, { useRef } from 'react';
 import PostListContainer from '../containers/posts/PostListContainer';
 import PaginationContainer from '../containers/posts/PaginationContainer';
+import Layout from '../components/common/layout'
 
 const PostListPage = () => {
+
     return(
-    <>  
-        <HeaderContainer />
-        <PostListContainer />
-        <PaginationContainer />
-    </>
+        <Layout >
+            <PostListContainer />
+            <PaginationContainer />
+        </Layout>
     )
 }
 

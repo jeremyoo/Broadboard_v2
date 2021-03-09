@@ -71,7 +71,7 @@ export const checkOwnPost = (ctx, next) => {
 */
 export const write = async (ctx) => {
   const schema = Joi.object().keys({
-    title: Joi.string().max(200).required(),
+    title: Joi.string().max(100).required(),
     body: Joi.string().required(),
     tags: Joi.array().items(Joi.string().max(20)).required(),
   });
@@ -115,20 +115,15 @@ export const list = async (ctx) => {
     ctx.status = 400;
     return;
   }
-  const { tag, username } = ctx.query;
-  const query = {
-    ...(username ? { 'user.username': username } : {}),
-    ...(tag ? { tags: tag } : {}),
-  };
   try {
-    const posts = await Post.find(query)
+    const posts = await Post.find({})
       .sort({ _id: -1 })
-      .limit(10)
-      .skip((page - 1) * 10)
+      .limit(12)
+      .skip((page - 1) * 12)
       .lean() // JSON
       .exec();
-    const postCount = await Post.countDocuments(query).exec();
-    ctx.set('Last-Page', Math.ceil(postCount / 10));
+    const postCount = await Post.countDocuments({}).exec();
+    ctx.set('Last-Page', Math.ceil(postCount / 12));
     ctx.body = posts
       .map((post) => ({
         ...post,
@@ -171,7 +166,7 @@ export const update = async (ctx) => {
   const { id } = ctx.params;
   // similar to write, but no required()
   const schema = Joi.object().keys({
-    title: Joi.string(),
+    title: Joi.string().max(100).required(),
     body: Joi.string(),
     tags: Joi.array().items(Joi.string()),
   });
@@ -223,3 +218,48 @@ export const like = async (ctx) => {
     ctx.thorw(500, e);
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+// /*
+//   GET /api/posts?username=&tag=&page=
+// */
+// export const list = async (ctx) => {
+//   // initial page value 1
+//   const page = parseInt(ctx.query.page || '1', 10);
+//   if (page < 1) {
+//     ctx.status = 400;
+//     return;
+//   }
+//   const { tag, nickname } = ctx.query;
+//   const query = {
+//     ...(nickname ? { 'user.nickname': nickname } : {}),
+//     ...(tag ? { tags: tag } : {}),
+//   };
+//   try {
+//     const posts = await Post.find(query)
+//       .sort({ _id: -1 })
+//       .limit(12)
+//       .skip((page - 1) * 12)
+//       .lean() // JSON
+//       .exec();
+//     const postCount = await Post.countDocuments(query).exec();
+//     ctx.set('Last-Page', Math.ceil(postCount / 12));
+//     ctx.body = posts
+//       .map((post) => ({
+//         ...post,
+//         body: removeHtmlAndShorten(post.body),
+//       }));
+//   } catch (e) {
+//     ctx.throw(500, e);
+//   }
+// };

@@ -3,55 +3,45 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Responsive from '../common/Responsive';
 import Button from '../common/Button';
-import palette from '../../lib/styles/palette';
 import SubInfo from '../common/SubInfo';
 import Tags from '../common/Tags';
 
 const PostListBlock = styled(Responsive)`
-    margin-top: 3rem;
+    margin-top: 4rem;
 `;
 
 const WritePostButtonWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 3rem;
+    padding: 2rem 0;
 `;
 
-const PostItemBlock = styled.div`
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-    &:first-child {
-        padding-top: 0;
-    }
-    & + & {
-        border-top: 1px solid ${palette.gray[2]};
-    }
-    
-    h2 {
-        font-size: 2rem;
-        margin-bottom: 0;
-        margin-top: 0;
-        &:hover {
-            color: ${palette.gray[6]};
-        }
-    }
-    p {
-        margin-top: 1rem;
-        word-wrap: break-word;
-    }
+const PostItemWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -2rem;
+`;
+
+const PostItemCard = styled.div`
+    width: 20rem;
+    margin: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
 `;
 
 const PostItem = ({ post }) => {
     const { publishedDate, user, tags, title, body, _id } = post;
     return (
-        <PostItemBlock>
+        <PostItemCard>
             <h2>
                 <Link to={`/@${user.nickname}/${_id}`}>{title}</Link>
             </h2>
             <SubInfo nickname={user.nickname} publishedDate={new Date(publishedDate)} />
             <Tags tags={tags} />
             <p>{body}</p>
-        </PostItemBlock>
+        </PostItemCard>
     );
 };
 
@@ -68,12 +58,12 @@ const PostList = ({ posts, loading, error, user }) => {
                 </Button>
                 )}
             </WritePostButtonWrapper>
-            {!loading && posts && (
-            <div>
-                {posts.map(post => (
-                    <PostItem post={post} key={post._id} />
-                ))}
-            </div>
+            {posts && (
+            <PostItemWrapper>
+                    {posts.map(post => (
+                        <PostItem post={post} key={post._id} />
+                    ))}
+            </PostItemWrapper>
             )}
         </PostListBlock>
     );
