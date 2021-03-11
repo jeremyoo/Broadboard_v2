@@ -102,7 +102,7 @@ const removeHtmlAndShorten = body => {
   const filtered = sanitizeHtml(body, {
     allowedTags: [],
   });
-  return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
+  return filtered.length < 125 ? filtered : `${filtered.slice(0, 125)}...`;
 }
 
 /*
@@ -218,16 +218,6 @@ export const like = async (ctx) => {
     ctx.thorw(500, e);
   }
 };
-
-
-
-
-
-
-
-
-
-
 
 
 // /*

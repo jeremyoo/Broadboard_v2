@@ -5,6 +5,7 @@ import Responsive from '../common/Responsive';
 import Button from '../common/Button';
 import SubInfo from '../common/SubInfo';
 import Tags from '../common/Tags';
+import moment from 'moment';
 
 const PostListBlock = styled(Responsive)`
     margin-top: 4rem;
@@ -24,23 +25,73 @@ const PostItemWrapper = styled.div`
 `;
 
 const PostItemCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 20rem;
+    height: 26rem;
     margin: 1rem;
-    padding: 1rem;
+    overflow: hidden;
     box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.06);
-    border-radius: 4px;
+    border-radius: 0.5rem;
+    .tags {
+        padding: 0 1rem;
+    }
+    .subInfo {
+        padding: 0.625rem 1rem 0.625rem;
+        border-top: 1px solid rgb(238, 241, 245);
+    }
+`;
+
+const PostItemLink = styled(Link)`
+    display: block;
+    .postImage {
+        height: 10rem;
+        background: var(--dark-teal);
+    }
+    .postContent {
+        padding: 0.5rem 1rem 0;
+        .title {
+            margin: 0 0 0.25rem;
+            font-size: var(--ft-xl);
+            font-weight: bold;
+            color: var(--light-navy);
+            word-break: break-word;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .date {
+            margin: 0 0 0.4rem;
+            font-size: var(--ft-sm);
+            color: var(--light-steel);
+        }
+        .body {
+            font-size: var(--ft-lg);
+            color: var(--lightestest-navy);
+            word-break: break-all;
+        }
+    }
 `;
 
 const PostItem = ({ post }) => {
-    const { publishedDate, user, tags, title, body, _id } = post;
+    const { publishedDate, user, like_users, likes_count, tags, title, body, _id } = post;
     return (
         <PostItemCard>
-            <h2>
-                <Link to={`/@${user.nickname}/${_id}`}>{title}</Link>
-            </h2>
-            <SubInfo nickname={user.nickname} publishedDate={new Date(publishedDate)} />
-            <Tags tags={tags} />
-            <p>{body}</p>
+            <PostItemLink to={`/@${user.nickname}/${_id}`}>
+                <div className="postImage">image</div>
+                <div className="postContent">
+                    <div className="title">{title}</div>
+                    <div className="date">{moment(publishedDate).format('HH: mm MMM-Do-YYYY')}</div>     
+                    <div className="body">{body}</div>
+                </div>
+            </PostItemLink>
+            <div className="tags">
+                <Tags tags={tags} />
+            </div>
+            <div className="subInfo">
+                <SubInfo nickname={user.nickname} likeUsers={like_users} likesCount={likes_count} />
+            </div>
         </PostItemCard>
     );
 };
