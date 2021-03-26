@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { write_Comment, update_Comment, initializeComment } from '../../modules/writeComment';
 
-const WriteCommentButtonContainer = ({ match }) => {
+const WriteCommentButtonContainer = ({ match, onCancelAdd }) => {
   const dispatch = useDispatch();
   const { body, commentId, user, loadingPost, loadingComments } = useSelector(({ writeComment, user, loading }) => ({
       body: writeComment.body,
@@ -38,7 +38,8 @@ const WriteCommentButtonContainer = ({ match }) => {
     <WriteCommentButtons
       onPublish={onPublish}
       onCancel={onCancel}
-      isEdit={!!commentId}
+      onCancelAdd={onCancelAdd}
+      commentId={commentId}
     />
   );
 };

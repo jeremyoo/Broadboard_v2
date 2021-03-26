@@ -3,7 +3,7 @@ import CommentEditor from '../../components/writeComment/CommentEditor';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeCommentField, initializeComment } from '../../modules/writeComment';
 
-const CommentEditorContainer = () => {
+const CommentEditorContainer = ({ originalCommentId }) => {
     const dispatch = useDispatch();
     const { body, loadingPost, loadingComments } = useSelector(({ writeComment, loading }) => ({
         body: writeComment.body,
@@ -25,7 +25,7 @@ const CommentEditorContainer = () => {
     
     if (loadingPost || loadingComments) return null;
 
-    return <CommentEditor onChangeComment={onChangeComment} body={body} />;
+    return <CommentEditor onChangeComment={onChangeComment} body={body} originalCommentId={originalCommentId} />;
 };
 
 export default CommentEditorContainer;

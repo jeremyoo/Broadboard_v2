@@ -8,6 +8,7 @@ import { setOriginalPost } from '../../modules/writePost';
 import { removePost } from '../../lib/api/posts';
 
 const PostViewerContainer = ({ match, history }) => {
+  
   const { postId } = match.params;
   const dispatch = useDispatch();
   const { post, error, loading, user } = useSelector(
@@ -20,6 +21,7 @@ const PostViewerContainer = ({ match, history }) => {
   );
 
   useEffect(() => {
+    console.log("viewerOuter");
     dispatch(readPost(postId));
     return () => {
       dispatch(unloadPost());

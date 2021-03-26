@@ -10,12 +10,14 @@ const GlobalStyle = createGlobalStyle`
     --light-navy: #172a45;
     --lightest-navy: #303C55;
     --lightestest-navy: #56678a;
+    --lightestestest-navy: #7c95c7;
 	--steel: #848ead;
     --light-steel: #a4afce;
     --lightest-steel: #d0dbff;
     --white: #e4f0ff;
     --bright-white: #f7fbff;
     --brightest-white: #fdfeff;
+	--lightest-teal: #e6fff6;
 	--light-teal: #afffe4;
     --teal: #64FAC8;
     --dark-teal: #14cc8f;
@@ -47,6 +49,8 @@ const GlobalStyle = createGlobalStyle`
     --ft-xxl: 1.5rem;
     --ft-sm-heading: 1.75rem;
     --ft-heading: 2rem;
+    --ft-lg-heading: 3rem;
+    --ft-xl-heading: 4rem;
 	}
 
 	html {

@@ -1,26 +1,31 @@
 import React, { useRef, useEffect } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
-import styled from 'styled-components';
-import Responsive from '../common/Responsive';
+import styled, { css } from 'styled-components';
 
-const CommentEditorBlock = styled(Responsive)`
-  padding-top: 2rem;
+const CommentEditorBlock = styled.div`
+  width: 736px;
+  margin: 0 auto;
+  ${props => props.originalCommentId && css `
+    margin-top: 1rem;
+  `}
 `;
 
 const CommentQuillWrapper = styled.div`
   .ql-editor {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.75rem;
     min-height: 120px;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: var(--ft-lg);
+    font-family: Sans-Serif;
+    line-height: 1.3;
   }
   .ql-editor.ql-blank::before {
     left: 0.75rem;
   }
+  background: var(--brightest-white);
 `;
 
-const CommentEditor = ({ onChangeComment, body }) => {
+const CommentEditor = ({ onChangeComment, body, originalCommentId }) => {
   const CommentquillElement = useRef(null);
   const CommentquillInstance = useRef(null);
 
@@ -33,8 +38,6 @@ const CommentEditor = ({ onChangeComment, body }) => {
         toolbar: {
           container: [
             ['bold', 'italic', 'underline', 'strike'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            ['blockquote', 'code-block', 'link'],
           ],
         }
       },
@@ -56,7 +59,7 @@ const CommentEditor = ({ onChangeComment, body }) => {
   }, [body]);
 
   return (
-    <CommentEditorBlock>
+    <CommentEditorBlock originalCommentId={originalCommentId} >
       <CommentQuillWrapper>
         <div ref={CommentquillElement} />
       </CommentQuillWrapper>

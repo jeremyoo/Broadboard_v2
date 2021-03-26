@@ -218,38 +218,3 @@ export const like = async (ctx) => {
     ctx.thorw(500, e);
   }
 };
-
-
-// /*
-//   GET /api/posts?username=&tag=&page=
-// */
-// export const list = async (ctx) => {
-//   // initial page value 1
-//   const page = parseInt(ctx.query.page || '1', 10);
-//   if (page < 1) {
-//     ctx.status = 400;
-//     return;
-//   }
-//   const { tag, nickname } = ctx.query;
-//   const query = {
-//     ...(nickname ? { 'user.nickname': nickname } : {}),
-//     ...(tag ? { tags: tag } : {}),
-//   };
-//   try {
-//     const posts = await Post.find(query)
-//       .sort({ _id: -1 })
-//       .limit(12)
-//       .skip((page - 1) * 12)
-//       .lean() // JSON
-//       .exec();
-//     const postCount = await Post.countDocuments(query).exec();
-//     ctx.set('Last-Page', Math.ceil(postCount / 12));
-//     ctx.body = posts
-//       .map((post) => ({
-//         ...post,
-//         body: removeHtmlAndShorten(post.body),
-//       }));
-//   } catch (e) {
-//     ctx.throw(500, e);
-//   }
-// };

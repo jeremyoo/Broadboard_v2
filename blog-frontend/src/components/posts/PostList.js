@@ -38,7 +38,7 @@ const PostItemCard = styled.div`
         padding: 0 1rem;
     }
     .subInfo {
-        padding: 0.625rem 1rem 0.625rem;
+        padding: 0.5rem 1rem 0.5rem;
         border-top: 1px solid rgb(238, 241, 245);
     }
 `;
@@ -47,7 +47,7 @@ const PostItemLink = styled(Link)`
     display: block;
     .postImage {
         height: 10rem;
-        background: var(--dark-teal);
+        background: var(--light-teal);
     }
     .postContent {
         padding: 0.5rem 1rem 0;
@@ -111,8 +111,8 @@ const PostList = ({ posts, loading, error, user }) => {
             </WritePostButtonWrapper>
             {posts && (
             <PostItemWrapper>
-                    {posts.map(post => (
-                        <PostItem post={post} key={post._id} />
+                    {posts.map((post, index) => (
+                        <PostItem post={post} key={index} />
                     ))}
             </PostItemWrapper>
             )}

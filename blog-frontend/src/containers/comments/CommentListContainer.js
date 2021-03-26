@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { listComments } from '../../modules/comments';
-import CommentList from '../../components/comments/commentList'
-import { readComment } from '../../modules/comment';
-import { setOriginalComment } from '../../modules/writeComment';
+import CommentList from '../../components/comments/CommentList'
 
-const CommentListContainer = ({ match }) => {
+const CommentListContainer = ({ match, onCancelAdd }) => {
     const dispatch = useDispatch();
     const { comments, commentsError, comment, commentError, writeComment, originalCommentId, loadingWriteComment, loadingPost, loadingComments, user } = useSelector(({ comments, comment, writeComment, loading, user }) => ({
             comments: comments.comments,
@@ -31,7 +29,6 @@ const CommentListContainer = ({ match }) => {
 
     if (loadingPost) return null;
 
-    // comment map으로 생성, 수정&삭제 버튼 세트로
     return (
         <CommentList
             loadingComments={loadingComments}
@@ -42,6 +39,7 @@ const CommentListContainer = ({ match }) => {
             originalCommentId={originalCommentId}
             user={user}
             postId={postId}
+            onCancelAdd={onCancelAdd}
         />
     )
 };

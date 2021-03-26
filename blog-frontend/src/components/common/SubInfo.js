@@ -40,7 +40,7 @@ const ProfilePic = styled.div`
     border-radius: 50%;
     width: 1.5rem;
     height: 1.5rem;
-    background-color: var(--bluish);
+    background-color: var(--dark-teal);
 `;
 
 const SubInfo = ({ nickname, likeUsers, likesCount }) => {
