@@ -7,10 +7,8 @@ import WritePage from './pages/WritePage';
 import PostPage from './pages/PostPage';
 import { Helmet } from 'react-helmet-async'
 import { GlobalStyle } from './lib/styles';
-// import fakeData from './lib/fakeData';
 
 const App = () => {
-  // fakeData();
 
   return (
     <>

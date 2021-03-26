@@ -42,6 +42,19 @@ const PostContent = styled.div`
   padding-bottom: 6rem;
   font-size: 1.3125rem;
   color: ${palette.gray[8]};
+  h1 {
+    margin: 2.5rem 0 1rem;
+  }
+  h2 {
+    margin: 1.85rem 0 1rem;
+  }
+  h1, h2 {
+    line-height: 1.5;
+  }
+  p {
+    margin: 1rem 0;
+    line-height: 1.5;
+  }
   word-break: keep-all;
   overflow-wrap: break-word;
 `;
