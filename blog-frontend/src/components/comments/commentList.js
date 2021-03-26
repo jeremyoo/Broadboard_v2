@@ -13,7 +13,7 @@ import moment from 'moment';
 
 const CommentListBlock = styled(Responsive)`
     width: 768px;
-    padding: 0 0 2rem;
+    padding: 2rem 0 4rem;
 `;
 
 const CommentItemBlock = styled.div`
@@ -22,6 +22,7 @@ const CommentItemBlock = styled.div`
         background: var(--bright-white);
         border: 1px solid ${palette.gray[2]};
         border-radius: 6px;
+        margin-bottom: 1rem;
     `): (css`
         background: var(--brightest-white);
         & + & {
@@ -66,10 +67,16 @@ const CommentItemBlock = styled.div`
             margin-right: 0.5rem;
         }
     }
-    .content {
-        padding: 0.75rem 1rem;;
-    }
 `;
+
+const CommentContent = styled.div`
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    word-break: break-all;
+`;
+
+
+
 
 const CommentItem = ({ comment, originalCommentId, loggedInUser, postId, history, onCancelAdd }) => {
     const { publishedDate, user, body } = comment;
@@ -108,7 +115,7 @@ const CommentItem = ({ comment, originalCommentId, loggedInUser, postId, history
             {originalCommentId === commentId ? (
                 <CommentEditorContainer originalCommentId={originalCommentId} />
             ) : (
-                <div className='content' dangerouslySetInnerHTML={{ __html: body }} />
+                <CommentContent dangerouslySetInnerHTML={{ __html: body }} />
             )}
         </CommentItemBlock>
     )
@@ -132,16 +139,3 @@ const CommentList = ({ loadingComments, comments, commentsError, originalComment
 };
 
 export default withRouter(CommentList);
-
-
-
-// {originalCommentId === commentId ? (
-//     <WriteCommentButtonContainer onCancelAdd={onCancelAdd} originalCommentId={originalCommentId} />
-// ): (<>
-//     <Button className='editBtn' cyan onClick={onEdit} >Edit</Button>
-//     <Button className='deleteBtn' onClick={onDelete} >Delete</Button>
-// </>)}
-// {loggedInUser && user._id === loggedInUser._id && !originalCommentId === commentId && (<>
-//     <Button className='editBtn' cyan onClick={onEdit} >Edit</Button>
-//     <Button className='deleteBtn' onClick={onDelete} >Delete</Button>
-// </>)}

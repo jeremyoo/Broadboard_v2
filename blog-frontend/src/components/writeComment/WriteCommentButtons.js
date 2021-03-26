@@ -13,9 +13,7 @@ const WriteCommentButtonsBlock = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  .largeBtn {
-    height: 2.125rem;
-  }
+  height: 2rem;
   & + & {
       margin-left: 0.5rem;
   }

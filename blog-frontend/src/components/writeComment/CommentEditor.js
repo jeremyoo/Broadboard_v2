@@ -32,7 +32,7 @@ const CommentEditor = ({ onChangeComment, body, originalCommentId }) => {
   useEffect(() => {
     CommentquillInstance.current = new Quill(CommentquillElement.current, {
       theme: 'snow',
-      placeholder: 'write your post...',
+      placeholder: 'write your comment...',
       modules: {
         // https://quilljs.com/docs/modules/toolbar/
         toolbar: {

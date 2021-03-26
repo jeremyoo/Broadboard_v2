@@ -42,7 +42,8 @@ const PostContent = styled.div`
   padding-bottom: 6rem;
   font-size: 1.3125rem;
   color: ${palette.gray[8]};
-  word-wrap: break-word;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 const PostViewer = ({ post, error, loading, actionButtons }) => {

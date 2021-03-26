@@ -62,7 +62,7 @@ const PostEditor = ({ onChangePost, title, body }) => {
         // https://quilljs.com/docs/modules/toolbar/
         toolbar: {
           container: [
-            [{ 'header': '2' }],
+            [{ 'header': '1' }, { 'header': '2' }],
             ['bold', 'italic', 'underline', 'strike'],
             [{ list: 'ordered' }, { list: 'bullet' }],
             ['blockquote', 'code-block', 'link', 'image'],
