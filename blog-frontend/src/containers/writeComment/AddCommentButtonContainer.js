@@ -25,7 +25,7 @@ const AddCommentButtonContainer = ({ onClickAdd, addComment, loadingComments }) 
   return (
     <AddCommentBlock addComment={addComment}>
     {!loadingComments && (
-        <AddCommentButton onClick={onClickAdd}>Add your comment!</AddCommentButton>
+        <AddCommentButton onClick={onClickAdd}>Click to add your comment!</AddCommentButton>
     ) }
     </AddCommentBlock>
   );
