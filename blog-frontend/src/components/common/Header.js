@@ -29,10 +29,6 @@ const Wrapper = styled(Responsive)`
     }
 `;
 
-const Spacer = styled.div`
-    height: 4rem;
-`;
-
 const UserInfo = styled.div`
     font-weight: 800;
     margin-right: 1rem;
@@ -43,7 +39,7 @@ const Header = ({ user, onLogout }) => {
     return (
         <HeaderBlock>
             <Wrapper>
-                <Link to='/' className="logo">
+                <Link to='/' onClick={() => window.scrollTo(0, 0)} className="logo">
                     BroadBoard
                 </Link>
                 {user ? (
