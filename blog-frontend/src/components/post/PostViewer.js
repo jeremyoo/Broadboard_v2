@@ -55,6 +55,10 @@ const PostContent = styled.div`
     margin: 1rem 0;
     line-height: 1.5;
   }
+  img {
+    margin: auto;
+    display: block;
+  }
   word-break: keep-all;
   overflow-wrap: break-word;
 `;
@@ -73,22 +77,36 @@ const PostTocBlock = styled.div`
     left: 100%;
   }
   .postToc {
-    margin-left: 4rem;
+    margin-left: 3rem;
     padding-left: 1rem;
     border-left: 3px solid ${palette.gray[2]};
     width: 250px;
+    ${props => props.scrolled && props.itemTop && css`
+      border-left: 3px solid ${palette.gray[4]};
+      top: ${props.itemTop - 0}px;
+    `}
     div {
-      margin: 0.4rem 0;
+      padding: 0.25rem 0;
       cursor: pointer;
-      &:hover {
-        font-weight: bold;
+      font-size: var(--ft-lg);
+      color: var(--lightestest-navy);
+      &:hover,
+      &:focus,
+      &:active {
+        text-shadow: var(--steel) 1px 0 2px;
+        animation: jumpX 0.25s;
+        animation-timing-function: var(--easing);
       }
     }
-    .active {
-      font-weight: bold;
+    .typeh2 {
+      margin-left: 0.75rem;
+    }
+    #tocInneractive {
+      text-shadow: var(--steel) 1px 0 2px;
+      animation: jumpX 0.25s;
+      animation-timing-function: var(--easing);
     }
   }
-
 `;
 
 const PostViewer = ({ post, error, loading, actionButtons }) => {
@@ -110,21 +128,20 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
           setToc(arr => [...arr, {
             tag: a.localName,
             text: a.innerText,
-            top: a.offsetTop - 65,
+            top: a.offsetTop,
           }])
         }
       });
       setItemTop(scrollRef.current.offsetTop - 250);
     }
-  }, [loading])
+  }, [loading, post])
 
   const tocFix = useCallback(() => {
-    if (document.documentElement.scrollTop >= 250) {
-      return setScrolled(true);
-    };
-    setScrolled(false);
+      if (document.documentElement.scrollTop >= 250 && tocElement.current !== null) {
+        return setScrolled(true);
+      };
+      return setScrolled(false);
   })
-
   useEffect(() => {
     window.addEventListener("scroll", tocFix, true);
     return () => {
@@ -142,14 +159,13 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
         const scrolling = currentScroll + (clientHeight * 2/5);
         const next = toc[index + 1] === undefined ? scrollHeight : toc[index + 1].top;
         if (a.top < scrolling && scrolling < next) {
-          tocRef.children[index].className = "active"
+          tocRef.children[index].id = "tocInneractive";
         } else {
-          tocRef.children[index].className = ""
+          tocRef.children[index].id = "";
         }
       })
     }
   });
-
   useEffect(() => {
     window.addEventListener("scroll", tocBold, true);
     return () => {
@@ -186,18 +202,11 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
         <Tags className='tags' tags={tags} viewerTags={viewerTags} />
       </PostHead>
       {actionButtons}
-      <PostTocBlock scrolled={scrolled} ref={scrollRef}>
+      <PostTocBlock scrolled={scrolled} itemTop={itemTop} ref={scrollRef}>
         <div className="postTocPosition">
-          <div className="postToc" ref={tocElement} style={{top: `${itemTop}px`}}>
+          <div className="postToc" ref={tocElement} >
           {toc.map((a, index) =>
-            <div key={index} yoyyo={a.top}
-            onClick={() => window.scrollTo({
-              top: a.top,
-              left: 0,
-              behavior: 'smooth'
-            })
-          }
-            >
+            <div className={"type"+a.tag} key={index} onClick={() => window.scrollTo({top: (a.top - (document.documentElement.clientHeight * 2/5) + 1), left: 0,behavior: 'smooth'})}>
               {a.text}
             </div>
           )}
@@ -210,3 +219,5 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
 };
 
 export default PostViewer;
+
+// style={{top: `${itemTop}px`}}
