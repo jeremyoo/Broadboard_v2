@@ -101,6 +101,43 @@ const GlobalStyle = createGlobalStyle`
 	ul, ol {
 		margin: 0 auto;
 	}
+
+	// animation
+	--easing: cubic-bezier(0.65, 0, 0.35, 1);
+    --transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+    --transition-long: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+
+	@keyframes spin {
+		0% {
+			transform: rotate(360deg);
+		}
+		100% {
+			transform: rotate(0);
+		}
+	}
+	@keyframes jumpY {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10%);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+	@keyframes jumpX {
+		0% {
+			transform: translateX(0);
+		}
+		50% {
+			transform: translateX(-2.5%);
+		}
+		100% {
+			transform: translateX(0);
+		}
+	}
+
 `;
 
 export default GlobalStyle;
