@@ -21,3 +21,8 @@ export const updatePost = ({ id, title, body, tags }) =>
   });
 
 export const removePost = (id) => client.delete(`/api/posts/${id}`);
+
+export const likePost = ({ id, userId }) =>
+  client.patch(`/api/posts/${id}/like`, {
+    userId,
+  });
