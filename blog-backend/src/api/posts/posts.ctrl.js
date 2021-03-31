@@ -200,21 +200,22 @@ export const update = async (ctx) => {
 */
 export const like = async (ctx) => {
   const { id } = ctx.params;
-  const { user } = ctx.request.body;
+  const { userId } = ctx.request.body;
   try {
     const post = await Post.findById(id).exec();
-    if (post.like_users.indexOf(user) !== -1) {
+    if (post.like_users.indexOf(userId) !== -1) {
       post.likes_count--;
-      post.like_users = post.like_users.filter((item) => item !== user);
+      post.like_users = post.like_users.filter((item) => item !== userId);
       post.save();
       ctx.body = post;
       return;
     };
     post.likes_count++;
-    post.like_users = [...post.like_users, user]
+    post.like_users = [...post.like_users, userId]
     post.save();
     ctx.body = post;
+    return;
   } catch (e) {
-    ctx.thorw(500, e);
+    ctx.throw(500, e);
   }
 };
