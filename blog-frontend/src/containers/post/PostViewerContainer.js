@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { readPost, unloadPost } from '../../modules/post';
+import { readPost, unloadPost, likePost } from '../../modules/post';
 import PostViewer from '../../components/post/PostViewer';
 import PostActionButtons from '../../components/post/PostActionButtons';
 import { setOriginalPost } from '../../modules/writePost';
@@ -21,7 +21,6 @@ const PostViewerContainer = ({ match, history }) => {
   );
 
   useEffect(() => {
-    console.log("viewerOuter");
     dispatch(readPost(postId));
     return () => {
       dispatch(unloadPost());
@@ -42,6 +41,16 @@ const PostViewerContainer = ({ match, history }) => {
     }
   };
 
+  const onLike = () => {
+    if (user && postId) {
+      const id = postId;
+      const userId = user._id;
+      dispatch(likePost({ id, userId }));
+    }
+    return;
+  }
+  
+
   const ownPost = (user && user._id) === (post && post.user._id);
 
   return (
@@ -49,6 +58,7 @@ const PostViewerContainer = ({ match, history }) => {
       post={post}
       loading={loading}
       error={error}
+      onLike={onLike}
       actionButtons={
         ownPost && <PostActionButtons onEdit={onEdit} onRemove={onRemove} />
       }
