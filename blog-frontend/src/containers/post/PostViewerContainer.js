@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { readPost, unloadPost, likePost } from '../../modules/post';
@@ -41,14 +41,30 @@ const PostViewerContainer = ({ match, history }) => {
     }
   };
 
-  const onLike = () => {
+  const onLike = useCallback(() => {
     if (user && postId) {
       const id = postId;
       const userId = user._id;
       dispatch(likePost({ id, userId }));
     }
     return;
-  }
+  });
+
+  const onAddCmt = useCallback(() => {
+    if (post && !loading) {
+      if (!document.getElementById("addCmtBtn")) {
+        const addNewCmt = document.getElementById("cmtEditor");
+        const addNewCmtHeight = addNewCmt.offsetTop;
+        window.scrollTo(0, addNewCmtHeight);
+        return;
+      }
+      const addCmt = document.getElementById("addCmtBtn");
+      const addCmtHeight = addCmt.offsetTop;
+      window.scrollTo(0, addCmtHeight);
+      addCmt.click();
+      return;
+    };
+  });
   
 
   const ownPost = (user && user._id) === (post && post.user._id);
@@ -59,6 +75,7 @@ const PostViewerContainer = ({ match, history }) => {
       loading={loading}
       error={error}
       onLike={onLike}
+      onAddCmt={onAddCmt}
       actionButtons={
         ownPost && <PostActionButtons onEdit={onEdit} onRemove={onRemove} />
       }
