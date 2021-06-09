@@ -205,7 +205,7 @@ export const like = async (ctx) => {
     const post = await Post.findById(id).exec();
     if (post.like_users.indexOf(userId) !== -1) {
       post.likes_count--;
-      post.like_users = post.like_users.filter((item) => item !== userId);
+      post.like_users = await post.like_users.filter((item) => item !== userId);
       post.save();
       ctx.body = post;
       return;
