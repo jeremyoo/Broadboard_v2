@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import CommentEditorContainer from '../writeComment/CommentEditorContainer';
 import WriteCommentButtonContainer from '../writeComment/WriteCommentButtonContainer';
 import AddCommentButtonContainer from '../writeComment/AddCommentButtonContainer';
