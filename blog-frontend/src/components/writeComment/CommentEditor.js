@@ -42,8 +42,10 @@ const CommentEditor = ({ onChangeComment, body, originalCommentId }) => {
         }
       },
     });
+
     // https://quilljs.com/docs/api/events
     const quill = CommentquillInstance.current;
+    quill.focus({preventScroll:false});
     quill.on('text-change', (delta, oldDelta, source) => {
       if (source === 'user') {
         onChangeComment({ key: 'body', value: quill.root.innerHTML });
@@ -60,7 +62,7 @@ const CommentEditor = ({ onChangeComment, body, originalCommentId }) => {
 
   return (
     <CommentEditorBlock originalCommentId={originalCommentId} >
-      <CommentQuillWrapper>
+      <CommentQuillWrapper id="cmtEditor">
         <div ref={CommentquillElement} />
       </CommentQuillWrapper>
     </CommentEditorBlock>
