@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     --lightest-navy: #303C55;
     --lightestest-navy: #56678a;
     --lightestestest-navy: #7c95c7;
+	--dark-steel: #727b95;
 	--steel: #848ead;
     --light-steel: #a4afce;
     --lightest-steel: #d0dbff;
