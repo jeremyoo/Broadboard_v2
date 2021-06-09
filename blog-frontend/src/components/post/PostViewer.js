@@ -5,6 +5,7 @@ import Responsive from '../common/Responsive';
 import Tags from '../common/Tags';
 import { Helmet } from 'react-helmet-async';
 import moment from 'moment';
+import { FaHeart, FaShareAlt, FaCommentDots, FaTools } from "react-icons/fa";
 
 const PostViewerBlock = styled(Responsive)`
   margin-top: 6rem;
@@ -12,7 +13,6 @@ const PostViewerBlock = styled(Responsive)`
 `;
 
 const PostHead = styled.div`
-  border-bottom: 1px solid ${palette.gray[2]};
   padding-bottom: 1rem;
   margin-bottom: 2rem;
   .title {
@@ -63,6 +63,93 @@ const PostContent = styled.div`
   overflow-wrap: break-word;
 `;
 
+
+const PostLikeShareBlock = styled.div`
+  ${props => props.scrolled && css`
+    .postLBC {
+      position: fixed;
+      right: calc(50vw + 367px);
+    }
+  `}
+  position: relative;
+  margin-top: 1rem;
+  .postLBCPosition {
+    position: absolute;
+    right: 100%;
+  }
+  .postLBC {
+    margin-right: 8rem;
+    padding: 0 0.6rem;
+    width: 90px;
+    height: 300px;
+    background-color: var(--bright-white);
+    border: 1px solid var(--lightest-steel);
+    border-radius: 5rem;
+    ${props => props.scrolled && props.itemTop && css`
+      top: ${props.itemTop - 0}px;
+    `}
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+    .likeBlock {
+      height: 115px;
+      background-color: var(--brightest-white);
+      border: 0.75px solid var(--lightest-steel);
+      border-radius: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .likeValue {
+        margin-top: 0.6rem;
+        color: var(--light-steel);
+        font-size: var(--ft-lg);
+        font-weight: bold;
+      }
+      .likeLogo {
+        cursor: pointer;
+        .FaHeart {
+          color: var(--light-steel);
+        }
+      }
+      &:hover,
+      &:focus,
+      &:active {
+        border: 0.75px solid var(--dark-steel);
+        .FaHeart,
+        .likeValue {
+          color: var(--dark-steel);
+        }
+      }
+    }
+    .commentLogo,
+    .shareLogo {
+      cursor: pointer;
+      height: 70px;
+      background-color: var(--brightest-white);
+      border: 0.75px solid var(--lightest-steel);
+      border-radius: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .FaCommentDots,
+      .FaShareAlt {
+        color: var(--light-steel);
+      }
+      &:hover,
+      &:focus,
+      &:active {
+        border: 0.75px solid var(--dark-steel);
+        .FaCommentDots,
+        .FaShareAlt {
+          color: var(--dark-steel);
+        }
+      }
+    }
+  }
+`;
+
+
 const PostTocBlock = styled.div`
   ${props => props.scrolled && css`
     .postToc {
@@ -77,18 +164,18 @@ const PostTocBlock = styled.div`
     left: 100%;
   }
   .postToc {
-    margin-left: 3rem;
+    margin-left: 4.5rem;
     padding-left: 1rem;
-    border-left: 3px solid ${palette.gray[2]};
+    border-left: 2px solid ${palette.gray[1]};
     width: 250px;
     ${props => props.scrolled && props.itemTop && css`
-      border-left: 3px solid ${palette.gray[4]};
+      border-left: 2px solid ${palette.gray[4]};
       top: ${props.itemTop - 0}px;
     `}
     div {
       padding: 0.25rem 0;
       cursor: pointer;
-      font-size: var(--ft-lg);
+      font-size: var(--ft-md);
       color: var(--lightestest-navy);
       &:hover,
       &:focus,
@@ -109,7 +196,7 @@ const PostTocBlock = styled.div`
   }
 `;
 
-const PostViewer = ({ post, error, loading, actionButtons }) => {
+const PostViewer = ({ post, error, loading, actionButtons, onLike, onAddCmt }) => {
 
   const contentRef = useRef();
   const scrollRef = useRef();
@@ -133,6 +220,9 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
         }
       });
       setItemTop(scrollRef.current.offsetTop - 250);
+    }
+    return () => {
+      setToc([]);
     }
   }, [loading, post])
 
@@ -184,7 +274,7 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
     return null;
   }
 
-  const { title, body, user, publishedDate, tags } = post;
+  const { title, body, user, publishedDate, tags, likes_count } = post;
   const viewerTags = true;
 
   return (
@@ -202,6 +292,26 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
         <Tags className='tags' tags={tags} viewerTags={viewerTags} />
       </PostHead>
       {actionButtons}
+      <PostLikeShareBlock scrolled={scrolled} itemTop={itemTop}>
+        <div className="postLBCPosition">
+          <div className="postLBC">
+            <div className="likeBlock">
+              <div className="likeLogo" onClick={onLike}>
+                <FaHeart className="FaHeart" size="32px" />
+              </div>
+              <div className="likeValue">
+                {likes_count}
+              </div>
+            </div>
+            <div className="shareLogo">
+              <FaShareAlt className="FaShareAlt" size="32px" />
+            </div>
+            <div className="commentLogo" onClick={onAddCmt}>
+              <FaCommentDots  className="FaCommentDots" size="32px" />
+            </div>
+          </div>
+        </div>
+      </PostLikeShareBlock>
       <PostTocBlock scrolled={scrolled} itemTop={itemTop} ref={scrollRef}>
         <div className="postTocPosition">
           <div className="postToc" ref={tocElement} >
@@ -219,5 +329,3 @@ const PostViewer = ({ post, error, loading, actionButtons }) => {
 };
 
 export default PostViewer;
-
-// style={{top: `${itemTop}px`}}
