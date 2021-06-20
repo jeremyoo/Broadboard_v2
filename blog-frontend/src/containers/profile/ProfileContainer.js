@@ -21,17 +21,12 @@ const ProfileContainer = ({ history }) => {
     );
 
     useEffect(() => {
+        dispatch(unloadTagsPosts());
         const currentUrl = history.location.pathname.split('/')[1];
         currentUrl !== "" && currentUrl.includes('@') ? onChangeProfile(`${currentUrl.substring(1)}`) : onChangeProfile('');
         if (profile.length !== 0) dispatch(listProfile({profile, tag, page}));
     }, [dispatch, profile, tag, page]);
 
-    // }, [dispatch]);
-
-    // useEffect(() => {
-    //     if (profile.length !== 0) dispatch(listProfile({profile, tag, page}));
-    // }, [dispatch, profile, tag, page]);
-    
     const onChangeProfile = (profile) => dispatch(changeProfile(profile));
     const onChangeTag = (tag) => dispatch(changeTag(tag));
 
