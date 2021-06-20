@@ -5,6 +5,8 @@ import checkLoggedIn from '../../lib/checkLoggedIn';
 const posts = new Router();  // /api/posts/
 
 posts.get('/', postsCtrl.list);
+posts.get('/profile', postsCtrl.profile);
+posts.get('/tags', postsCtrl.list);
 posts.post('/', checkLoggedIn, postsCtrl.write);
 
 const post = new Router(); // /api/posts/:id/
