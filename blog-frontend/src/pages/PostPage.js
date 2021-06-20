@@ -1,13 +1,15 @@
 import React from 'react';
-import HeaderContainer from '../containers/common/HeaderContainer';
 import PostViewerContainer from '../containers/post/PostViewerContainer';
+import CommentContainer from '../containers/comments/CommentContainer'
+import Layout from '../components/common/Layout'
 
 const PostPage = () => {
+
     return (
-        <>
-            <HeaderContainer />
+        <Layout>
             <PostViewerContainer />
-        </>    
+            <CommentContainer />
+        </Layout>
     )
 }
 

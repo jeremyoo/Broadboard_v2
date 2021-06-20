@@ -13,7 +13,14 @@ const buttonStyle = css`
     outline: none;
     cursor: pointer;
 
-    background: ${palette.gray[8]};
+    ${props =>
+        props.background ? (css`
+            background: var(--${props.background});
+        `) : (css`
+            background: ${palette.gray[8]};
+        `)
+    }
+
     &:hover {
         background: ${palette.gray[6]};
     }

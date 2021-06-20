@@ -8,12 +8,13 @@ export const register = async (ctx) => {
   // Request Body verification
   const schema = Joi.object().keys({
     username: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-    nickname: Joi.string().alphanum().min(4).max(15).required(),
+    nickname: Joi.string().alphanum().min(4).max(30).required(),
     password: Joi.string().required(),
-    sentence: Joi.string().max(30),
+    sentence: Joi.string().max(100),
   });
   const result = schema.validate(ctx.request.body);
   if (result.error) {
+    console.log(result.error);
     ctx.status = 400;
     ctx.body = result.error;
     return;
@@ -22,7 +23,7 @@ export const register = async (ctx) => {
   try {
     // check username & nickname
     const existsUser = await User.findByUsername(username);
-    const existsNick = await User.findOne({ nickname: nickname });
+    const existsNick = await User.findByNickname(nickname);
     if (existsUser || existsNick) {
       ctx.status = 409; // conflict
       return;
@@ -32,6 +33,10 @@ export const register = async (ctx) => {
       username,
       nickname,
       sentence,
+      follower_count: 0,
+      following_count: 0,
+      followers: [],
+      followings: [],
     });
     await user.setPassword(password);
     await user.save();
@@ -76,6 +81,7 @@ export const login = async (ctx) => {
       httpOnly: true,
     });
   } catch (e) {
+    console.log(e);
     ctx.throw(500, e);
   }
 };
@@ -89,7 +95,7 @@ export const check = async (ctx) => {
     ctx.status = 401; // Unauthorized
     return;
   }
-  ctx.body = user;
+  ctx.body = user
 };
 
 /*

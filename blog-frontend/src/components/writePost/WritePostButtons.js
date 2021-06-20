@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '../common/Button';
 
-const WriteActionButtonsBlock = styled.div`
+const WritePostButtonsBlock = styled.div`
   margin-top: 1rem;
   margin-bottom: 3rem;
   button + button {
@@ -17,15 +17,15 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const WriteActionButtons = ({ onCancel, onPublish, isEdit }) => {
+const WritePostButtons = ({ onCancel, onPublish, isEdit }) => {
   return (
-    <WriteActionButtonsBlock>
+    <WritePostButtonsBlock>
       <StyledButton cyan onClick={onPublish}>
         {isEdit ? 'Edit' : 'Add'} Post
       </StyledButton>
       <StyledButton onClick={onCancel}>Cancel</StyledButton>
-    </WriteActionButtonsBlock>
+    </WritePostButtonsBlock>
   );
 };
 
-export default WriteActionButtons;
+export default WritePostButtons;

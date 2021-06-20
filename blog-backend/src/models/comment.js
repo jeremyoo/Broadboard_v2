@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
 const CommentSchema = new Schema({
-    comment: String,
+    body: String,
     publishedDate: {
         type: Date,
         default: Date.now,
@@ -11,27 +11,14 @@ const CommentSchema = new Schema({
     },
     user: {
         _id: mongoose.Types.ObjectId,
-        username: String,
+        nickname: String,
     },
     post: {
-        _id: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+        required: true,
     }
 });
 
 const Comment = mongoose.model('Comment', CommentSchema);
 export default Comment;
-
-
-// const PostSchema = new Schema({
-//     title: String,
-//     body: String,
-//     tags: [String],
-//     publishedDate: {
-//       type: Date,
-//       default: Date.now,
-//     },
-//     user: {
-//       _id: mongoose.Types.ObjectId,
-//       username: String,
-//     },
-//   });

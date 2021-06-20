@@ -10,7 +10,6 @@ import connect from './models';
 import api from './api';
 import jwtMiddleware from './lib/jwtMiddleware';
 
-// eslint-disable-next-line no-undef
 const { PORT } = process.env;
 
 const app = new Koa();
@@ -24,7 +23,6 @@ app.use(jwtMiddleware);
 // apply router
 app.use(router.routes()).use(router.allowedMethods());
 
-// eslint-disable-next-line no-undef
 const buildDirectory = path.resolve(__dirname, '../../blog-frontend/build');
 app.use(serve(buildDirectory));
 app.use(async ctx => {
@@ -32,6 +30,7 @@ app.use(async ctx => {
     await send(ctx, 'index.html', { root: buildDirectory});
   }
 })
+
 
 const port = PORT || 4000;
 
