@@ -36,7 +36,7 @@ const PaginationContainer = () => {
         let clientHeight = document.documentElement.clientHeight;
         if ((scrollTop + clientHeight >= scrollHeight * 0.9) && scrollHeight !== clientHeight) {
             if (posts && !tag && !profile && loading === false && lastPage > page) return dispatch(changePage());
-            if (postsProfile && !tag && loadingProfile === false && lastPageProfile > pageProfile) return dispatch(changeProfilePage());
+            if (postsProfile && profile && !postsTags && loadingProfile === false && lastPageProfile > pageProfile) return dispatch(changeProfilePage());
             if (postsTags && tag && !profile && loadingTags === false && lastPageTags > pageTags) return dispatch(changeTagsPage());
             return;
         };
