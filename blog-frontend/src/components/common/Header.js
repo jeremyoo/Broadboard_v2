@@ -9,6 +9,7 @@ const HeaderBlock = styled.div`
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1;
     background: var(--brightest-white);
     ${props => props.scrollDown && css`
         transform: translateY(-4.5rem);
