@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import PostListPage from './pages/PostListPage';
+import ProfileListPage from './pages/ProfileListPage';
+import TagsListPage from './pages/TagsListPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import WritePage from './pages/WritePage';
@@ -16,7 +18,9 @@ const App = () => {
         <title>REACTERS</title>
       </Helmet>
         <GlobalStyle />
-          <Route component={PostListPage} path={['/@:nickname', '/']} exact />
+          <Route component={PostListPage} path='/' exact />
+          <Route component={ProfileListPage} path='/@:nickname' exact />
+          <Route component={TagsListPage} path='/tags/:tag' exact />
           <Route component={LoginPage} path="/login" />
           <Route component={RegisterPage} path="/register" />
           <Route component={WritePage} path="/write" />
