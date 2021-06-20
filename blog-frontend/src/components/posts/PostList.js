@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Responsive from '../common/Responsive';
 import Button from '../common/Button';
@@ -48,7 +48,18 @@ const PostItemLink = styled(Link)`
     display: block;
     .postImage {
         height: 10rem;
+        width: 100%;
+        position: relative;
         background: var(--light-teal);
+        img {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
     }
     .postContent {
         padding: 0.5rem 1rem 0;
@@ -76,11 +87,14 @@ const PostItemLink = styled(Link)`
 `;
 
 const PostItem = ({ post }) => {
-    const { publishedDate, user, like_users, likes_count, tags, title, body, _id } = post;
+    const { publishedDate, user, like_users, likes_count, tags, title, body, banner, _id } = post;
+    console.log(banner);
     return (
         <PostItemCard>
             <PostItemLink to={`/@${user.nickname}/${_id}`}>
-                <div className="postImage">image</div>
+                <div className="postImage">
+                    {banner && banner !== "" ? (<img src={`${banner}`} />):(<></>)}
+                </div>
                 <div className="postContent">
                     <div className="title">{title}</div>
                     <div className="date">{moment(publishedDate).format('HH: mm MMM-Do-YYYY')}</div>     
