@@ -1,4 +1,5 @@
 import Post from '../../models/post';
+import User from '../../models/user';
 import mongoose from 'mongoose';
 import Joi from '@hapi/joi';
 import sanitizeHtml from 'sanitize-html';
@@ -97,42 +98,108 @@ export const write = async (ctx) => {
     ctx.throw(500, e);
   }
 };
-// shorten body for preview
-const removeHtmlAndShorten = body => {
+
+// shorten body for postlists
+const removeHtmlAndShortenProfile = body => {
+  const filtered = sanitizeHtml(body, {
+    allowedTags: [],
+  });
+  return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
+}
+
+// shorten body for postlists
+const removeHtmlAndShortenList = body => {
   const filtered = sanitizeHtml(body, {
     allowedTags: [],
   });
   return filtered.length < 125 ? filtered : `${filtered.slice(0, 125)}...`;
 }
 
+// get posts 
+const querySet = (query, page) => {
+  return [
+    { $match: query},
+    { $lookup: {
+      from: 'comments',
+      localField: '_id',
+      foreignField: 'post',
+      as: 'comments'
+    } },
+    { $sort: { _id: -1 } },
+    { $skip: (page - 1) * 12 },
+    { $limit: 12 },
+  ]
+}
+
 /*
-  GET /api/posts?username=&tag=&page=
+  GET /api/posts?profile=&tag=&page=
 */
 export const list = async (ctx) => {
-  // initial page value 1
   const page = parseInt(ctx.query.page || '1', 10);
-  if (page < 1) {
-    ctx.status = 400;
-    return;
-  }
+  const query = ctx.query.tag && ctx.query.tag !== '' ? { tags: { $all: [`${ctx.query.tag}`] } } : {};
+  // posts for infinite scrolling
+  if (page < 1) { ctx.status = 400; return; }
   try {
-    const posts = await Post.find({})
-      .sort({ _id: -1 })
-      .limit(12)
-      .skip((page - 1) * 12)
-      .lean() // JSON
-      .exec();
-    const postCount = await Post.countDocuments({}).exec();
+    const posts = await Post.aggregate(querySet(query, page)).exec();
+    const postCount = await Post.countDocuments(query).exec();
     ctx.set('Last-Page', Math.ceil(postCount / 12));
-    ctx.body = posts
+    return ctx.body = posts
       .map((post) => ({
         ...post,
-        body: removeHtmlAndShorten(post.body),
-      }));
+        body: removeHtmlAndShortenList(post.body),
+    }));
+  } catch (e) {
+    ctx.throw(500, e);
+    }
+};
+/*
+  GET /api/posts/profile?profile=&tag=&page=
+*/
+export const profile = async (ctx) => {
+  const { profile, tag } = ctx.query;
+  const query = tag ? {"user.nickname": profile, tags: tag} : {"user.nickname": profile};
+  const page = parseInt(ctx.query.page || '1', 10);
+  try {
+    const allPost = await Post.find({"user.nickname": profile});
+    // profile's taglist
+    const result = (allPost !== []) ? await allPost.map((item) => {
+      const temp = {};
+      item.tags.forEach((item) => {
+        temp[item] = (temp[item] || 0) + 1;
+      });
+      return temp
+    }).reduce((prev, current) => {
+      Object.keys(prev).forEach(key => {
+        if (current[key]) {
+          current[key] = (prev[key] || 0) + 1;
+        } else {
+          current[key] = (prev[key] || 0);
+        }
+      });
+      return current;
+    }): {};
+    const taglist = result !== {} ? Object.entries(result) : [];
+    // profile's posts
+    const posts = await Post.aggregate(querySet(query, page)).exec();
+    const shortenBodyPosts = posts.map((post) => ({
+      ...post,
+      body: removeHtmlAndShortenProfile(post.body),
+    }));
+    // profile's info
+    const userInfo = await User.findOne({nickname: profile});
+    ctx.set('Last-Page', Math.ceil(posts.length / 12));
+    ctx.body = {
+      posts: shortenBodyPosts,
+      taglist: taglist,
+      user: userInfo.serialize(),
+    }
+    return ctx.body;
   } catch (e) {
     ctx.throw(500, e);
   }
 };
+
+
 
 /*
   GET /api/posts/:id
