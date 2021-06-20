@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PostListContainer from '../containers/posts/PostListContainer';
-import PaginationContainer from '../containers/posts/PaginationContainer';
-import Layout from '../components/common/layout'
+import PaginationContainer from '../containers/common/PaginationContainer';
+import Layout from '../components/common/Layout'
 
 const PostListPage = () => {
 

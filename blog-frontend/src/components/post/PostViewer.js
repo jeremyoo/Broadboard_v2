@@ -8,7 +8,7 @@ import moment from 'moment';
 import { FaHeart, FaShareAlt, FaCommentDots, FaTools } from "react-icons/fa";
 
 const PostViewerBlock = styled(Responsive)`
-  margin-top: 6rem;
+  margin-top: 4.5rem;
   width: 768px;
 `;
 
@@ -78,10 +78,10 @@ const PostLikeShareBlock = styled.div`
     right: 100%;
   }
   .postLBC {
-    margin-right: 8rem;
-    padding: 0 0.6rem;
-    width: 90px;
-    height: 300px;
+    margin-right: 4rem;
+    padding: 0 0.5rem;
+    width: 72px;
+    height: 240px;
     background-color: var(--bright-white);
     border: 1px solid var(--lightest-steel);
     border-radius: 5rem;
@@ -93,7 +93,7 @@ const PostLikeShareBlock = styled.div`
     justify-content: space-evenly;
     text-align: center;
     .likeBlock {
-      height: 115px;
+      height: 100px;
       background-color: var(--brightest-white);
       border: 0.75px solid var(--lightest-steel);
       border-radius: 3rem;
@@ -103,7 +103,7 @@ const PostLikeShareBlock = styled.div`
       .likeValue {
         margin-top: 0.6rem;
         color: var(--light-steel);
-        font-size: var(--ft-lg);
+        font-size: var(--ft-xsm);
         font-weight: bold;
       }
       .likeLogo {
@@ -125,7 +125,7 @@ const PostLikeShareBlock = styled.div`
     .commentLogo,
     .shareLogo {
       cursor: pointer;
-      height: 70px;
+      height: 55px;
       background-color: var(--brightest-white);
       border: 0.75px solid var(--lightest-steel);
       border-radius: 3rem;
@@ -289,7 +289,7 @@ const PostViewer = ({ post, error, loading, actionButtons, onLike, onAddCmt }) =
           <div className='spacer'>·</div>
           <div className='date'>{moment(publishedDate).format('HH: mm MMM-Do-YYYY')}</div>
         </div>
-        <Tags className='tags' tags={tags} viewerTags={viewerTags} />
+        <Tags className='tags' tags={tags} viewerTags />
       </PostHead>
       {actionButtons}
       <PostLikeShareBlock scrolled={scrolled} itemTop={itemTop}>
@@ -297,17 +297,17 @@ const PostViewer = ({ post, error, loading, actionButtons, onLike, onAddCmt }) =
           <div className="postLBC">
             <div className="likeBlock">
               <div className="likeLogo" onClick={onLike}>
-                <FaHeart className="FaHeart" size="32px" />
+                <FaHeart className="FaHeart" size="28px" />
               </div>
               <div className="likeValue">
                 {likes_count}
               </div>
             </div>
             <div className="shareLogo">
-              <FaShareAlt className="FaShareAlt" size="32px" />
+              <FaShareAlt className="FaShareAlt" size="28px" />
             </div>
             <div className="commentLogo" onClick={onAddCmt}>
-              <FaCommentDots  className="FaCommentDots" size="32px" />
+              <FaCommentDots  className="FaCommentDots" size="28px" />
             </div>
           </div>
         </div>

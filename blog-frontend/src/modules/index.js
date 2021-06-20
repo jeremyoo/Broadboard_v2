@@ -8,6 +8,8 @@ import posts, { postsSaga } from './posts';
 import writeComment, { writeCommentSaga } from './writeComment';
 import comment, { commentSaga } from './comment';
 import comments, { commentsSaga } from './comments';
+import profile, { profileSaga } from './profile';
+import tags, { tagspostsSaga } from './tags';
 import loading from './loading';
 
 const rootReducer = combineReducers({
@@ -20,10 +22,12 @@ const rootReducer = combineReducers({
   writeComment,
   comment,
   comments,
+  profile,
+  tags,
 });
 
 export function* rootSaga() {
-  yield all([authSaga(), userSaga(), writePostSaga(), postSaga(), postsSaga(), writeCommentSaga(), commentSaga(), commentsSaga()]);
+  yield all([authSaga(), userSaga(), writePostSaga(), postSaga(), postsSaga(), profileSaga(), tagspostsSaga(), writeCommentSaga(), commentSaga(), commentsSaga()]);
 }
 
 export default rootReducer;

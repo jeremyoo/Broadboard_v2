@@ -72,10 +72,10 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
                 {type === 'register' && (
                     <>
                         <StyledInput
-                        name="nickname"
-                        placeholder="nickname"
-                        onChange={onChange}
-                        value={form.nickname}
+                            name="nickname"
+                            placeholder="nickname"
+                            onChange={onChange}
+                            value={form.nickname}
                         />
                     </>
                 )}

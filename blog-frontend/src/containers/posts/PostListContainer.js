@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PostList from '../../components/posts/PostList';
 import { listPosts } from '../../modules/posts';
+import { unloadProfile } from '../../modules/profile';
+import { unloadTagsPosts } from '../../modules/tags';
 
 const PostListContainer = () => {
     const dispatch = useDispatch();
@@ -18,8 +19,14 @@ const PostListContainer = () => {
     );
 
     useEffect(() => {
-        dispatch(listPosts({ page }));
+        if (page && posts && posts.length / 12 === page ) return;
+        dispatch(listPosts({page}));
     }, [dispatch, page]);
+
+    useEffect(() => {
+        dispatch(unloadProfile());
+        dispatch(unloadTagsPosts());
+    }, []);
 
     return (
         <PostList

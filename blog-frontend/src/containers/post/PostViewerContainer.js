@@ -5,7 +5,10 @@ import { readPost, unloadPost, likePost } from '../../modules/post';
 import PostViewer from '../../components/post/PostViewer';
 import PostActionButtons from '../../components/post/PostActionButtons';
 import { setOriginalPost } from '../../modules/writePost';
+import { unloadPosts } from '../../modules/posts'
 import { removePost } from '../../lib/api/posts';
+import { changeProfile, unloadProfile } from '../../modules/profile';
+import { changeTags } from '../../modules/tags';
 
 const PostViewerContainer = ({ match, history }) => {
   
@@ -21,10 +24,11 @@ const PostViewerContainer = ({ match, history }) => {
   );
 
   useEffect(() => {
+    dispatch(changeTags(''));
+    const currentUrl = history.location.pathname.split('/')[1];
+    currentUrl !== "" && currentUrl.includes('@') ? onChangeProfile(`${currentUrl.substring(1)}`) : onChangeProfile('');
     dispatch(readPost(postId));
-    return () => {
-      dispatch(unloadPost());
-    };
+    return () => { dispatch(unloadPost()); dispatch(unloadProfile()); }
   }, [dispatch, postId]);
 
   const onEdit = () => {
@@ -35,6 +39,7 @@ const PostViewerContainer = ({ match, history }) => {
   const onRemove = async () => {
     try {
       await removePost(postId);
+      dispatch(unloadPosts());
       history.push('/');
     } catch (e) {
       console.log(e);
@@ -65,9 +70,10 @@ const PostViewerContainer = ({ match, history }) => {
       return;
     };
   });
-  
 
   const ownPost = (user && user._id) === (post && post.user._id);
+
+  const onChangeProfile = (profile) => { dispatch(changeProfile(profile));}
 
   return (
     <PostViewer

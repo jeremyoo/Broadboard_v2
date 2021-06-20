@@ -3,6 +3,7 @@ import WritePostButtons from '../../components/writePost/WritePostButtons';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { write_Post, update_Post } from '../../modules/writePost';
+import { unloadPosts } from '../../modules/posts';
 
 const WritePostButtonsContainer = ({ history }) => {
   const dispatch = useDispatch();
@@ -22,13 +23,8 @@ const WritePostButtonsContainer = ({ history }) => {
       dispatch(update_Post({ title, body, tags, id: originalPostId }));
       return;
     }
-    dispatch(
-      write_Post({
-        title,
-        body,
-        tags,
-      }),
-    );
+    dispatch(write_Post({ title, body, tags}));
+    dispatch(unloadPosts());
   };
 
   const onCancel = () => {

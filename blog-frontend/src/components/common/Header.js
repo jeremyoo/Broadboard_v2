@@ -1,27 +1,45 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled, { css } from 'styled-components';
 import Responsive from './Responsive';
 import Button from './Button';
-import { Link } from 'react-router-dom';
+import Logo from './Logo';
+import { Link, withRouter } from 'react-router-dom';
 
 const HeaderBlock = styled.div`
     position: fixed;
     top: 0;
     width: 100%;
-    background: white;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+    background: var(--brightest-white);
+    ${props => props.scrollDown && css`
+        transform: translateY(-4.5rem);
+        transition: var(--transition);
+    `}
+    ${props => props.scrollUp && css`
+        box-shadow: rgb(0 0 0 / 6%) 0px 0px 16px;
+        transform: translateY(0rem);
+        transition: var(--transition);
+    `}
 `;
 
 const Wrapper = styled(Responsive)`
-    height: 4rem;
+    height: 4.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .logo {
-        font-size: 1.125rem;
-        font-weight: 800;
+    .logoBlock {
+        display: flex;
+        align-items: center;
+        font-size: var(--ft-xxl);
+        font-weight: bold;
+        color: var(--lightest-navy);
         letter-spacing: 2px;
+        .homeLogo {
+            display: flex;
+            align-items: center;
+        }
+        .logotitle {
+            margin-left: 0.4rem;
+        }
     }
     .right {
         display: flex;
@@ -34,17 +52,33 @@ const UserInfo = styled.div`
     margin-right: 1rem;
 `;
 
-const Header = ({ user, onLogout }) => {
+const Header = ({ user, onLogout, scrollDown, scrollUp, onChangeProfile, profile, tag }) => {
 
     return (
-        <HeaderBlock>
+        <HeaderBlock scrollDown={scrollDown} scrollUp={scrollUp}>
             <Wrapper>
-                <Link to='/' onClick={() => window.scrollTo(0, 0)} className="logo">
-                    BroadBoard
-                </Link>
+                <div className='logoBlock'>
+                    {(profile !== '' || tag !== '') ? (
+                        <div className='viewerLogo'>
+                            <Link to='/' onClick={() => window.scrollTo(0, 0)} ><Logo /></Link>
+                            {((profile && !tag) &&
+                                <Link to={`/@${profile}`} onClick={() => {window.scrollTo(0, 0); onChangeProfile(profile);} } className='logotitle' >.{profile}</Link> 
+                            )}
+                            {((tag && !profile) &&
+                                <Link to={`/tags/${tag}`} onClick={() => window.scrollTo(0, 0)} className='logotitle' >.#{tag}</Link>
+                            )}
+                        </div>
+                    ):(
+                        <Link to='/' onClick={() => window.scrollTo(0, 0)} className='homeLogo'>
+                            <Logo />
+                            <div className='logotitle'>roadBoard</div>
+                        </Link>
+                    )}
+                </div>
+
                 {user ? (
                     <div className='right'>
-                        <UserInfo>{user.nickname}</UserInfo>
+                        <UserInfo>{user.profile}</UserInfo>
                         <Button onClick={onLogout} >Log out</Button>
                     </div>
                 ) : (
@@ -57,4 +91,4 @@ const Header = ({ user, onLogout }) => {
     );
 };
 
-export default Header;
+export default withRouter(Header);

@@ -12,24 +12,22 @@ const [
 ] = createRequestActionTypes('posts/LIST_POSTS');
 
 const CHANGE_PAGE = 'posts/CHANGE_PAGE'
-const UNLOAD_POSTS = 'posts/UNLOAD_POSTS'
+const UNLOAD_POSTS = 'post/UNLOAD_POSTS';
 
-export const listPosts = createAction(
-  LIST_POSTS,
-  (page) => (page),
-);
+export const listPosts = createAction(LIST_POSTS, (page) => (page));
 export const changePage = createAction(CHANGE_PAGE);
 export const unloadPosts = createAction(UNLOAD_POSTS);
+
 const listPostsSaga = createRequestSaga(LIST_POSTS, postsAPI.listPosts);
-export function* postsSaga() {
-  yield takeLatest(LIST_POSTS, listPostsSaga);
-};
+export function* postsSaga() {yield takeLatest(LIST_POSTS, listPostsSaga)};
+
 
 const initialState = {
   posts: null,
   error: null,
   lastPage: 1,
   page: 1,
+  tags: '',
 };
 
 const posts = handleActions(
@@ -43,7 +41,7 @@ const posts = handleActions(
       ...state,
       error,
     }),
-    [CHANGE_PAGE]: (state, { payload: page }) => ({
+    [CHANGE_PAGE]: (state) => ({
       ...state,
       page: state.page + 1,
     }),

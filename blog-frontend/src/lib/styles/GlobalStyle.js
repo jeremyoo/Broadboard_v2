@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-	
+
 	:root {
 	// global color
 	--dark-navy: #020d1f;
@@ -52,6 +52,11 @@ const GlobalStyle = createGlobalStyle`
     --ft-heading: 2rem;
     --ft-lg-heading: 3rem;
     --ft-xl-heading: 4rem;
+
+	// animation
+	--easing: cubic-bezier(0.65, 0, 0.35, 1);
+    --transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+    --transition-long: all 1s cubic-bezier(0.65, 0, 0.35, 1);
 	}
 
 	html {
@@ -103,11 +108,6 @@ const GlobalStyle = createGlobalStyle`
 		margin: 0 auto;
 	}
 
-	// animation
-	--easing: cubic-bezier(0.65, 0, 0.35, 1);
-    --transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
-    --transition-long: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
-
 	@keyframes spin {
 		0% {
 			transform: rotate(360deg);
@@ -138,7 +138,6 @@ const GlobalStyle = createGlobalStyle`
 			transform: translateX(0);
 		}
 	}
-
 `;
 
 export default GlobalStyle;

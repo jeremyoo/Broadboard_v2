@@ -34,6 +34,7 @@ const PostItemCard = styled.div`
     overflow: hidden;
     box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.06);
     border-radius: 0.5rem;
+    background: white;
     .tags {
         padding: 0 1rem;
     }
@@ -96,10 +97,10 @@ const PostItem = ({ post }) => {
     );
 };
 
-const PostList = ({ posts, loading, error, user }) => {
-    if (error) {
-        return <PostListBlock>Error occured.</PostListBlock>;
-    }
+const PostList = ({ posts, error, user }) => {
+    
+    if (error) return <PostListBlock>Error occured.</PostListBlock>;
+
     return (
         <PostListBlock>
             <WritePostButtonWrapper>
