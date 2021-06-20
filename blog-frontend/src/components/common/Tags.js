@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeTags, unloadTagsPosts } from '../../modules/tags'
 
 const TagsBlock = styled.div`
@@ -39,8 +39,9 @@ const TagsBlock = styled.div`
 `;
 
 const Tags = ({ tags, viewerTags }) => {
-
     const dispatch = useDispatch();
+    const { tagState } = useSelector(({ tags }) => ({ tagState: tags.tag }));
+
     const onChangeTags = useCallback((tag) => { dispatch(unloadTagsPosts()); dispatch(changeTags(tag));});
 
     return (
@@ -48,7 +49,7 @@ const Tags = ({ tags, viewerTags }) => {
             {tags.map(tag => (
                 <Link className="tag" to={`/tags/${tag}`}
                     onClick={() => {
-                        onChangeTags(tag);
+                        if (tagState !== tag) onChangeTags(tag);
                         window.scrollTo(0, 0);
                     }}
                 key={tag} >
