@@ -14,7 +14,9 @@ const CommentSchema = new Schema({
         nickname: String,
     },
     post: {
-        _id: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+        required: true,
     }
 });
 
