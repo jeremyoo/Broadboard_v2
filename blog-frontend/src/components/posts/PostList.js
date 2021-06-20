@@ -51,6 +51,7 @@ const PostItemLink = styled(Link)`
         width: 100%;
         position: relative;
         background: var(--light-teal);
+        z-index: 0;
         img {
             position: absolute;
             top: 0px;
