@@ -7,8 +7,9 @@ import CommentListContainer from '../comments/CommentListContainer';
 
 const CommentContainer = ({ history }) => {
     const dispatch = useDispatch();
-    const { user, loadingComments } = useSelector(({ user, loading }) => ({
+    const { user, loadingPost, loadingComments } = useSelector(({ user, loading }) => ({
         user: user.user,
+        loadingPost: loading['post/READ_POST'],
         loadingComments: loading['comments/LIST_COMMENTS'],
         })
     )
@@ -29,7 +30,8 @@ const CommentContainer = ({ history }) => {
                 addComment={addComment}
                 onClickAdd={onClickAdd}
                 onCancelAdd={onCancelAdd}
-                loadingComments={loadingComments}    
+                loadingComments={loadingComments}
+                loadingPost={loadingPost}
             />
             <CommentListContainer onCancelAdd={onCancelAdd} />
         </>
