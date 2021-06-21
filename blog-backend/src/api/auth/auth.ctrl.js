@@ -55,7 +55,6 @@ export const register = async (ctx) => {
   POST api/auth/login
 */
 export const login = async (ctx) => {
-  console.log(ctx.request);
   const { username, password } = ctx.request.body;
   // error on no username || paswrod
   if (!username || !password) {
