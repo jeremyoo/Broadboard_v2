@@ -89,7 +89,6 @@ const PostItemLink = styled(Link)`
 
 const PostItem = ({ post }) => {
     const { publishedDate, user, like_users, likes_count, tags, title, body, banner, _id } = post;
-    console.log(banner);
     return (
         <PostItemCard>
             <PostItemLink to={`/@${user.nickname}/${_id}`}>
