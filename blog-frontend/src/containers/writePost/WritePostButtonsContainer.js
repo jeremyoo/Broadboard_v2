@@ -5,30 +5,27 @@ import { withRouter } from 'react-router-dom';
 import { write_Post, update_Post } from '../../modules/writePost';
 import { unloadPosts } from '../../modules/posts';
 
-const WritePostButtonsContainer = ({ history }) => {
+const WritePostButtonsContainer = ({ history, onChangeConfirm }) => {
   const dispatch = useDispatch();
-  const { title, body, tags, post, postError, originalPostId } = useSelector(
+  const { title, banner, body, tags, post, error, originalPostId } = useSelector(
     ({ writePost }) => ({
       title: writePost.title,
+      banner: writePost.banner,
       body: writePost.body,
       tags: writePost.tags,
       post: writePost.post,
-      postError: writePost.postError,
+      error: writePost.error,
       originalPostId: writePost.originalPostId,
     }),
   );
 
   const onPublish = () => {
     if (originalPostId) {
-      dispatch(update_Post({ title, body, tags, id: originalPostId }));
+      dispatch(update_Post({ title, banner, body, tags, id: originalPostId }));
       return;
     }
-    dispatch(write_Post({ title, body, tags}));
+    dispatch(write_Post({ title, banner, body, tags}));
     dispatch(unloadPosts());
-  };
-
-  const onCancel = () => {
-    history.goBack();
   };
 
   useEffect(() => {
@@ -36,16 +33,16 @@ const WritePostButtonsContainer = ({ history }) => {
       const { _id, user } = post;
       history.push(`/@${user.nickname}/${_id}`);
     }
-    if (postError) {
-      console.log(postError);
+    if (error) {
+      console.log(error);
     }
-  }, [history, post, postError]);
+  }, [history, post, error]);
 
   return (
     <WritePostButtons
       onPublish={onPublish}
-      onCancel={onCancel}
       isEdit={!!originalPostId}
+      onChangeConfirm={onChangeConfirm}
     />
   );
 };

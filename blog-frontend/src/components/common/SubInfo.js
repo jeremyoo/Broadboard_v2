@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
 import { IoChatboxEllipses, IoHeart } from "react-icons/io5";
@@ -34,6 +34,9 @@ const SubInfoBlock = styled.div`
             margin: 0 0.25rem 0 1rem;
         }
     }
+    ${props => props.preview && css`
+        pointer-events: none;
+    `}
 `;
 
 const ProfilePic = styled.div`
@@ -43,9 +46,9 @@ const ProfilePic = styled.div`
     background-color: var(--dark-teal);
 `;
 
-const SubInfo = ({ nickname, likeUsers, likesCount }) => {
+const SubInfo = ({ preview, nickname, likeUsers, likesCount }) => {
     return (
-        <SubInfoBlock>
+        <SubInfoBlock preview={preview}>
             <Link className='link' to={`/@${nickname}`}>
                 <ProfilePic />
                 <div className='nickname'>by<b>{nickname}</b></div>
