@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import Responsive from './Responsive';
 import Button from './Button';
 import Logo from './Logo';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -40,20 +40,28 @@ const Wrapper = styled(Responsive)`
         }
         .logotitle {
             margin-left: 0.4rem;
+            color: var(--lightestest-navy);
         }
     }
     .right {
         display: flex;
         align-items: center;
+        .firstChild {
+            margin-right: 0.5rem;
+        }
     }
 `;
 
 const UserInfo = styled.div`
-    font-weight: 800;
+    padding: 0.25rem 1rem;
     margin-right: 1rem;
+    color: var(--lightestest-navy);
+    cursor: pointer;
 `;
 
-const Header = ({ user, onLogout, scrollDown, scrollUp, onChangeProfile, profile, tag }) => {
+
+
+const Header = ({ user, onClickLogin, onClickRegister, onLogout, scrollDown, scrollUp, onChangeProfile, profile, tag }) => {
 
     return (
         <HeaderBlock scrollDown={scrollDown} scrollUp={scrollUp}>
@@ -71,7 +79,7 @@ const Header = ({ user, onLogout, scrollDown, scrollUp, onChangeProfile, profile
                         </div>
                     ):(
                         <Link to='/' onClick={() => window.scrollTo(0, 0)} className='homeLogo'>
-                            <Logo />
+                            <Logo className='logo' />
                             <div className='logotitle'>roadBoard</div>
                         </Link>
                     )}
@@ -79,12 +87,13 @@ const Header = ({ user, onLogout, scrollDown, scrollUp, onChangeProfile, profile
 
                 {user ? (
                     <div className='right'>
-                        <UserInfo>{user.profile}</UserInfo>
-                        <Button onClick={onLogout} >Log out</Button>
+                        <UserInfo className='firstChild'><Link to={`/@${user.nickname}`}>{user.nickname}</Link></UserInfo>
+                        <Button onClick={() => { window.scrollTo(0, 0); onLogout();}} >Log out</Button>
                     </div>
                 ) : (
-                    <div className="right">
-                        <Button to='/login'>Log in</Button>
+                    <div className='right'>
+                        <Button className='firstChild' onClick={onClickLogin} reverse>Log in</Button>
+                        <Button onClick={onClickRegister}>Register</Button>
                     </div>
                 )}
             </Wrapper>
@@ -92,4 +101,4 @@ const Header = ({ user, onLogout, scrollDown, scrollUp, onChangeProfile, profile
     );
 };
 
-export default withRouter(Header);
+export default Header;
