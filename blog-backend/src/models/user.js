@@ -6,6 +6,7 @@ const UserSchema = new Schema({
   username: String,
   nickname: String,
   hashedPassword: String,
+  profilePic: Object,
   sentence: String,
 });
 
@@ -32,6 +33,8 @@ UserSchema.methods.generateToken = function () {
       _id: this.id,
       username: this.username,
       nickname: this.nickname,
+      profilePic: this.profilePic,
+      sentence: this.sentence,
     },
     // second param: JWT password
     // eslint-disable-next-line no-undef
@@ -51,7 +54,6 @@ UserSchema.statics.findByUsername = function (username) {
 UserSchema.statics.findByNickname = function (nickname) {
   return this.findOne({ nickname });
 };
-
 
 const User = mongoose.model('User', UserSchema);
 export default User;
