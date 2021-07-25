@@ -1,5 +1,6 @@
 import Joi from '@hapi/joi';
 import User from '../../models/user';
+import { profile } from '../posts/posts.ctrl';
 
 /*
   POST api/auth/register
@@ -10,8 +11,10 @@ export const register = async (ctx) => {
     username: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     nickname: Joi.string().alphanum().min(4).max(30).required(),
     password: Joi.string().required(),
-    sentence: Joi.string().max(100),
+    profilePic: Joi.object().optional(),
+    sentence: Joi.string().max(100).optional(),
   });
+  const { username, nickname, password, profilePic, sentence } = ctx.request.body;
   const result = schema.validate(ctx.request.body);
   if (result.error) {
     console.log(result.error);
@@ -19,7 +22,10 @@ export const register = async (ctx) => {
     ctx.body = result.error;
     return;
   }
-  const { username, nickname, password, sentence } = ctx.request.body;
+  if (profilePic && !(profilePic.color && profilePic.color !== {} || profilePic.imgUrl && profilePic.imgUrl !== '')) {
+    ctx.status = 400; // bad request;
+    return;
+  }
   try {
     // check username & nickname
     const existsUser = await User.findByUsername(username);
@@ -27,12 +33,13 @@ export const register = async (ctx) => {
     if (existsUser || existsNick) {
       ctx.status = 409; // conflict
       return;
-    }
+    };
     // create user
     const user = new User({
       username,
       nickname,
       sentence,
+      profilePic,
       follower_count: 0,
       following_count: 0,
       followers: [],
