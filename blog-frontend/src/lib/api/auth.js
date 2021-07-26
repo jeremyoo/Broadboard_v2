@@ -6,8 +6,8 @@ client.post('/api/auth/login', { username, password });
 
 
 // register
-export const register = ({ username, nickname, password, sentence }) =>
-client.post('/api/auth/register', { username, nickname, password, sentence });
+export const register = ({ username, nickname, password, profilePic, sentence }) =>
+client.post('/api/auth/register', { username, nickname, password, profilePic, sentence });
 
 // check log in
 export const check = () => client.get('/api/auth/check');

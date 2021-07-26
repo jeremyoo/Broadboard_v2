@@ -7,6 +7,11 @@ import * as authAPI from '../lib/api/auth';
 const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM'
 
+const CHANGE_TYPE = 'auth/CHANGE_TYPE';
+const INITIALIZE_TYPE = 'auth/INITIALIZE_TYPE';
+const INITIALIZE_PROFILEPIC = 'write/INITIALIZE_PROFILEPIC';
+
+
 const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes('auth/REGISTER');
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('auth/LOGIN');
 
@@ -22,10 +27,15 @@ export const initializeForm = createAction(INITIALIZE_FORM,
     form => form // register / login
 );
 
-export const register = createAction(REGISTER, ({ username, nickname, password, sentence }) => ({
+export const changeType = createAction(CHANGE_TYPE, type => type);
+export const initializeType = createAction(INITIALIZE_TYPE);
+export const initializeProfilePic = createAction(INITIALIZE_PROFILEPIC);
+
+export const register = createAction(REGISTER, ({ username, nickname, password, profilePic, sentence }) => ({
     username,
     nickname, 
     password,
+    profilePic,
     sentence,
 }));
 
@@ -49,12 +59,14 @@ const initialState = {
         nickname: '',
         password: '',
         passwordConfirm: '',
+        profilePic: {},
         sentence: '',
     },
     login: {
         username: '',
         password: '',
     },
+    type: '',
     auth: null,
     authError: null
 };
@@ -69,6 +81,18 @@ const auth = handleActions(
             ...state,
             [form]: initialState[form],
             authError: null, // initialize error
+        }),
+        [INITIALIZE_PROFILEPIC]: (state) =>
+            produce(state, draft => {
+                draft.register.profilePic = {};
+        }),
+        [CHANGE_TYPE]: (state, { payload: type }) => ({
+            ...state,
+            type: type,
+        }),
+        [INITIALIZE_TYPE]: (state) => ({
+            ...state,
+            type: '',
         }),
         // Register success
         [REGISTER_SUCCESS]: (state, {payload: auth}) => ({
