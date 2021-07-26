@@ -5,7 +5,7 @@ import { changeField, initializeForm, login } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { check } from '../../modules/user';
 
-const LoginForm = ({ history }) => {
+const LoginForm = ({ history, onAuthOff, onSwitchType }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const { form, auth, authError, user } = useSelector(({auth, user}) => ({
@@ -51,6 +51,7 @@ const LoginForm = ({ history }) => {
     useEffect(() => {
         if (user) {
             history.goBack();
+            onAuthOff();
             try {
                 localStorage.setItem('user', JSON.stringify(user));
             } catch (e) {
@@ -63,8 +64,10 @@ const LoginForm = ({ history }) => {
         <AuthForm
             type="login"
             form={form}
+            onAuthOff={onAuthOff}
             onChange={onChange}
             onSubmit={onSubmit}
+            onSwitchType={onSwitchType}
             error={error}
         />
     );

@@ -9,13 +9,14 @@ const GlobalStyle = createGlobalStyle`
 	--navy-shadow: rgba(2, 12, 27, 0.7);
     --light-navy: #172a45;
     --lightest-navy: #303C55;
-    --lightestest-navy: #56678a;
+    --lightestest-navy: #5b6e94;
     --lightestestest-navy: #7c95c7;
 	--dark-steel: #727b95;
 	--steel: #848ead;
     --light-steel: #a4afce;
     --lightest-steel: #d0dbff;
-    --white: #e4f0ff;
+    --lightestest-steel: #dfe6ff;
+    --white: #eaf3ff;
     --bright-white: #f7fbff;
     --brightest-white: #fdfeff;
 	--lightest-teal: #e6fff6;
@@ -51,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
     --ft-sm-heading: 1.75rem;
     --ft-heading: 2rem;
     --ft-lg-heading: 3rem;
+    --ft-lgest-heading: 3.5rem;
     --ft-xl-heading: 4rem;
 
 	// animation
@@ -63,9 +65,9 @@ const GlobalStyle = createGlobalStyle`
 		scroll-behavior: smooth;
 		box-sizing: border-box;
 		overflow-x: hidden;
-		height: 100%;
-		width: 100vw;
+		width: 100%;
 		position: relative;
+		font-smooth: always;
 	}
 	
 	*,
@@ -74,11 +76,14 @@ const GlobalStyle = createGlobalStyle`
 		box-sizing: inherit;
 	}
 
+	html, body, #root {
+		height: 100%;
+	}
+
 	body {
 		margin: 0;
 		padding: 0;
 		width: 100%;
-		min-height: 100%;
 		background-color: var(--brightest-white);
 		color: var(--dark-navy);
 		font-family: Sans-Serif;
@@ -106,6 +111,10 @@ const GlobalStyle = createGlobalStyle`
 
 	ul, ol {
 		margin: 0 auto;
+	}
+
+	div {
+		box-sizing: inherit;
 	}
 
 	@keyframes spin {
