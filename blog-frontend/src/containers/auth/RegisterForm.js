@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeField, initializeForm, register } from '../../modules/auth';
+import { changeField, initializeForm, initializeProfilePic, register } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { check } from '../../modules/user';
 import { withRouter } from 'react-router-dom';
 
-const RegisterForm = ({ history }) => {
+const RegisterForm = ({ history, onAuthOff, onSwitchType }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const { form, auth, authError, user } = useSelector(({auth, user}) => ({
@@ -14,19 +14,22 @@ const RegisterForm = ({ history }) => {
         authError: auth.authError,
         user: user.user,
     }));
+    const profilePic = form.profilePic;
 
-    const onChange = e => {
+    const onChange = useCallback((e) => {
         const { value, name } = e.target;
-        dispatch(
-            changeField({
-                form: 'register',
-                key: name,
-                value
-            })
-        );
-    };
+        dispatch(changeField({form: 'register', key: name, value }));
+    }, [dispatch]);
 
-    const onSubmit = e => {
+    const onChangeProfile = useCallback((payload) => {
+        dispatch(changeField(payload));
+    }, [dispatch]);
+
+    const onInitializeProfilePic = () => {
+        dispatch(initializeProfilePic());
+    }
+
+    const onSubmit = (e) => {
         e.preventDefault();
         const { username, nickname, password, passwordConfirm, sentence } = form;
         if ([username, nickname, password, passwordConfirm].includes('')) {
@@ -39,7 +42,7 @@ const RegisterForm = ({ history }) => {
             dispatch(changeField({ form:'register', key:'passwordConfirm', value:''}));
             return;
         }
-        dispatch(register({ username, nickname, password, sentence }));
+        dispatch(register({ username, nickname, password, profilePic, sentence }));
     };
 
     useEffect(() => {
@@ -63,6 +66,7 @@ const RegisterForm = ({ history }) => {
     useEffect(() => {
         if (user) {
             history.push('/');
+            onAuthOff();
             try {
                 localStorage.setItem('user', JSON.stringify(user));
             } catch (e) {
@@ -75,8 +79,12 @@ const RegisterForm = ({ history }) => {
         <AuthForm
             type="register"
             form={form}
+            onAuthOff={onAuthOff}
             onChange={onChange}
+            onChangeProfile={onChangeProfile}
+            onInitializeProfilePic={onInitializeProfilePic}
             onSubmit={onSubmit}
+            onSwitchType={onSwitchType}
             error={error}
         />
     );
