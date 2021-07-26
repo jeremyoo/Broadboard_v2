@@ -18,17 +18,19 @@ const CommentBlock = styled(Responsive)`
     `};
 `;
 
-const CommentWriteContainer = ({ loadingComments, addComment, onClickAdd, onCancelAdd }) => {
+const CommentWriteContainer = ({ loadingComments, loadingPost, addComment, onClickAdd, onCancelAdd }) => {
 
     return (
         <>
-            {!addComment ?
-            <AddCommentButtonContainer onClickAdd={onClickAdd} addComment={addComment} loadingComments={loadingComments} />:
-            <CommentBlock addComment={addComment}>
-                <CommentEditorContainer addComment={addComment} />
-                <WriteCommentButtonContainer onCancelAdd={onCancelAdd} />
-            </CommentBlock>
-            }
+            {!loadingPost && <>
+                {!addComment ?
+                <AddCommentButtonContainer onClickAdd={onClickAdd} addComment={addComment} loadingComments={loadingComments} />:
+                <CommentBlock addComment={addComment}>
+                    <CommentEditorContainer addComment={addComment} />
+                    <WriteCommentButtonContainer onCancelAdd={onCancelAdd} />
+                </CommentBlock>
+                }    
+            </>}
         </>
     )
 };

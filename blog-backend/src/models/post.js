@@ -3,6 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 const PostSchema = new Schema({
   title: String,
   body: String,
+  banner: String,
   tags: [String],
   publishedDate: {
     type: Date,

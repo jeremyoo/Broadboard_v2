@@ -11,6 +11,8 @@ const jwtMiddleware = async (ctx, next) => {
       _id: decoded._id,
       username: decoded.username,
       nickname: decoded.nickname,
+      profilePic: decoded.profilePic,
+      sentence: decoded.sentence,
     };
     // if token exp within regenerate new token
     const now = Math.floor(Date.now() / 1000);

@@ -7,22 +7,33 @@ const buttonStyle = css`
     border: none;
     border-radius: 4px;
     font-size: 1rem;
-    font-weight: bold;
     padding: 0.25rem 1rem;
-    color: white;
     outline: none;
     cursor: pointer;
-
+    transition: var(--transition);
     ${props =>
-        props.background ? (css`
-            background: var(--${props.background});
-        `) : (css`
-            background: ${palette.gray[8]};
-        `)
-    }
-
-    &:hover {
-        background: ${palette.gray[6]};
+        props.reverse ? css`
+            color: var(--lightestest-navy);
+            background: none;
+            padding: 0.1875rem 0.9375rem;
+            border: 1px solid var(--lightestestest-navy);
+            border-color: transparent;
+            ${props => props.background && css`
+                background: var(--${props.background});
+            `}
+            &:hover {
+                background: var(--white);
+                padding: 0.1875rem 0.9375rem;
+                border: 1px solid var(--lightestestest-navy);
+                border-radius: 4px;
+            }
+        `: css`
+            color: var(--brightest-white);
+            background: var(--lightestest-navy);
+            &:hover {
+                background: var(--lightestestest-navy);
+            }
+        `
     }
 
     ${props =>
@@ -37,10 +48,17 @@ const buttonStyle = css`
     ${props =>
         props.cyan &&
         css`
-            background: ${palette.cyan[5]};
+            background: ${palette.cyan[6]};
             &:hover{
                 background: ${palette.cyan[4]};
             }
+        `
+    }
+
+    ${props => 
+        props.icon &&
+        css`
+            padding: 0 0.5rem;
         `
     }
 
@@ -62,9 +80,18 @@ const StyledLink = styled(Link)`
 
 const Button = props => {
     return props.to ? (
-            <StyledLink {...props} cyan={props.cyan ? 1 : 0} />
+            <StyledLink {...props} 
+                cyan={props.cyan ? 1 : 0}
+                reverse={props.reverse ? 1 : 0}
+                icon={props.icon ? 1 : 0}
+            />
         ) : (
-            <StyledButton {...props} />
+            <StyledButton {...props} 
+                cyan={props.cyan ? 1 : 0} 
+                reverse={props.reverse ? 1 : 0} 
+                icon={props.icon ? 1 : 0}
+                backurl={props.backurl ? 1: 0}
+            />
         );
 };
 

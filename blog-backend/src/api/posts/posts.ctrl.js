@@ -74,7 +74,8 @@ export const write = async (ctx) => {
   const schema = Joi.object().keys({
     title: Joi.string().max(100).required(),
     body: Joi.string().required(),
-    tags: Joi.array().items(Joi.string().max(20)).required(),
+    banner: Joi.string().allow('').optional(),
+    tags: Joi.array().items(Joi.string().max(20)).optional(),
   });
   const result = schema.validate(ctx.request.body);
   if (result.error) {
@@ -82,9 +83,10 @@ export const write = async (ctx) => {
     ctx.body = result.error;
     return;
   }
-  const { title, body, tags } = ctx.request.body;
+  const { title, body, tags, banner } = ctx.request.body;
   const post = new Post({
     title,
+    banner,
     body: sanitizeHtml(body, sanitizeOption),
     tags,
     user: ctx.state.user,
@@ -99,20 +101,18 @@ export const write = async (ctx) => {
   }
 };
 
-// shorten body for postlists
-const removeHtmlAndShortenProfile = body => {
+const removeHtmlAndShorterProfile = body => {
   const filtered = sanitizeHtml(body, {
     allowedTags: [],
   });
-  return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
+  return filtered.length < 250 ? filtered : `${filtered.slice(0, 250)}...`;
 }
 
-// shorten body for postlists
-const removeHtmlAndShortenList = body => {
+const removeHtmlAndShortestList = body => {
   const filtered = sanitizeHtml(body, {
     allowedTags: [],
   });
-  return filtered.length < 125 ? filtered : `${filtered.slice(0, 125)}...`;
+  return filtered.length < 100 ? filtered : `${filtered.slice(0, 100)}...`;
 }
 
 // get posts 
@@ -146,7 +146,7 @@ export const list = async (ctx) => {
     return ctx.body = posts
       .map((post) => ({
         ...post,
-        body: removeHtmlAndShortenList(post.body),
+        body: removeHtmlAndShortestList(post.body),
     }));
   } catch (e) {
     ctx.throw(500, e);
@@ -183,10 +183,11 @@ export const profile = async (ctx) => {
     const posts = await Post.aggregate(querySet(query, page)).exec();
     const shortenBodyPosts = posts.map((post) => ({
       ...post,
-      body: removeHtmlAndShortenProfile(post.body),
+      body: removeHtmlAndShorterProfile(post.body),
     }));
     // profile's info
     const userInfo = await User.findOne({nickname: profile});
+    console.log("profile");
     ctx.set('Last-Page', Math.ceil(posts.length / 12));
     ctx.body = {
       posts: shortenBodyPosts,
@@ -235,7 +236,8 @@ export const update = async (ctx) => {
   const schema = Joi.object().keys({
     title: Joi.string().max(100).required(),
     body: Joi.string(),
-    tags: Joi.array().items(Joi.string()),
+    banner: Joi.string().allow('').optional(),
+    tags: Joi.array().items(Joi.string().max(20)).optional(),
   });
   const result = schema.validate(ctx.request.body);
   if (result.error) {

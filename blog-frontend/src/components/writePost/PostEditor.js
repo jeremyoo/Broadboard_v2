@@ -8,7 +8,8 @@ import * as fileCtrl from '../../lib/api/file';
 
 const PostEditorBlock = styled(Responsive)`
   padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-bottom: 3rem;
+  width: 768px;
 `;
 
 const TitleInput = styled.input`
@@ -24,7 +25,7 @@ const TitleInput = styled.input`
 const PostQuillWrapper = styled.div`
   .ql-editor {
     padding: 0.5rem 1rem;
-    min-height: 320px;
+    min-height: 360px;
     font-size: 1.125rem;
     line-height: 1.5;
   }

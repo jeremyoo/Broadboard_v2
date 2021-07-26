@@ -6,6 +6,7 @@ import * as postsAPI from '../lib/api/posts';
 import { takeLatest } from 'redux-saga/effects';
 
 const INITIALIZE_POST = 'write/INITIALIZE_POST';
+const INITIALIZE_BANNER = 'write/INITIALIZE_BANNER';
 const CHANGE_FIELD_POST = 'write/CHANGE_FIELD_POST';
 const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST';
 
@@ -22,21 +23,24 @@ const [
 ] = createRequestActionTypes('write/UPDATE_POST');
 
 export const initializePost = createAction(INITIALIZE_POST);
+export const initializeBanner = createAction(INITIALIZE_BANNER);
 export const changePostField = createAction(CHANGE_FIELD_POST, ({ key, value }) => ({
   key,
   value,
 }));
 export const setOriginalPost = createAction(SET_ORIGINAL_POST, (post) => post);
-export const write_Post = createAction(WRITE_POST, ({ title, body, tags }) => ({
+export const write_Post = createAction(WRITE_POST, ({ title, banner, body, tags }) => ({
   title,
+  banner,
   body,
   tags,
 }));
 export const update_Post = createAction(
   UPDATE_POST,
-  ({ id, title, body, tags }) => ({
+  ({ id, title, banner, body, tags }) => ({
     id,
     title,
+    banner,
     body,
     tags,
   }),
@@ -53,15 +57,20 @@ export function* writePostSaga() {
 const initialState = {
   title: '',
   body: '',
+  banner: '',
   tags: [],
   post: null,
-  postError: null,
+  error: null,
   originalPostId: null,
 };
 
 const writePost = handleActions(
   {
     [INITIALIZE_POST]: (state) => initialState,
+    [INITIALIZE_BANNER]: (state) => ({
+      ...state,
+      banner: '',
+    }),
     [CHANGE_FIELD_POST]: (state, { payload: { key, value } }) => ({
       ...state,
       [key]: value,
@@ -70,9 +79,9 @@ const writePost = handleActions(
       ...state,
       post,
     }),
-    [WRITE_POST_FAILURE]: (state, { payload: postError }) => ({
+    [WRITE_POST_FAILURE]: (state, { payload: error }) => ({
       ...state,
-      postError,
+      error,
     }),
     [SET_ORIGINAL_POST]: (state, { payload: post }) => ({
       ...state,
