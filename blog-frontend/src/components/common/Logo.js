@@ -1,6 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import palette from '../../lib/styles/palette';
+import styled from 'styled-components';
 
 const LogoBlock = styled.div`
     display: flex;
@@ -9,12 +8,13 @@ const LogoBlock = styled.div`
     width: 45px;
     height: 45px;
     border-radius: 0.4rem;
-    background-color: var(--lightest-navy);
+    background-color: var(--lightestest-navy);
     .typo {
         font-size: var(--ft-heading);
         color: var(--brightest-white);
         font-family: Georgia, serif;
         font-weight: bold;
+
     }
 `;
 
